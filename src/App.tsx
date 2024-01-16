@@ -5,19 +5,22 @@ import RegisterComponent from "./components/RegisterComponent";
 import HeaderComponent from "./header/HeaderComponent";
 import FooterComponent from "./header/FooterComponent";
 import "./App.css";
+import { UserProvider } from "./context/UserContext";
 
 const App = () => {
   return (
     <Router>
-      <HeaderComponent />
-      <Routes>
-        <Route
-          path="/login"
-          element={<LoginComponent email="" password="" />}
-        />
-        <Route path="/signup" element={<RegisterComponent />} />
-      </Routes>
-      <FooterComponent />
+      <UserProvider>
+        <HeaderComponent />
+        <Routes>
+          <Route
+            path="/login"
+            element={<LoginComponent email="" password="" />}
+          />
+          <Route path="/signup" element={<RegisterComponent />} />
+        </Routes>
+        <FooterComponent />
+      </UserProvider>
     </Router>
   );
 };

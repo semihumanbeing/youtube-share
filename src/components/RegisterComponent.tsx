@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterComponent = () => {
   const [username, setUsername] = useState("");
@@ -81,7 +81,7 @@ const RegisterComponent = () => {
 
   return (
     <div className="user-container">
-      <h1>회원가입</h1>
+      <h2>Welcome!</h2>
       {errors.email && <p className="error-message">{errors.email}</p>}
       <input
         className="user-input"
@@ -107,9 +107,14 @@ const RegisterComponent = () => {
         placeholder="닉네임"
       />
 
-      <button className="user-button" onClick={handleRegister}>
-        회원가입
-      </button>
+      <div className="user-submit-container">
+        <button className="user-button" onClick={handleRegister}>
+          회원가입
+        </button>
+        <Link className="user-link" to="/login">
+          로그인
+        </Link>
+      </div>
     </div>
   );
 };

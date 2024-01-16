@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { LoginProps } from "../props/LoginProps";
 import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { getUserIdFromJWT } from "../common/JwtUtil";
 
 const LoginComponent = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
   const [passwordInput, setPasswordInput] = useState(password);
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const { setUser } = useUser();
 
   const validateEmail = (email: string) => {
     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
@@ -41,8 +44,16 @@ const LoginComponent = ({ email, password }: LoginProps) => {
     });
 
     if (response.ok) {
-      // const data = await response.json();
-      alert("Login successful:");
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("jwt="))
+        ?.split("=")[1];
+      if (token) {
+        const userId = getUserIdFromJWT(token);
+        if (userId) {
+          setUser({ userId });
+        }
+      }
     } else {
       alert("Login failed");
     }
@@ -50,6 +61,7 @@ const LoginComponent = ({ email, password }: LoginProps) => {
 
   return (
     <div className="user-container">
+      <h2>Log in</h2>
       {errors.email && <p className="error-message">{errors.email}</p>}
       <input
         className="user-input"

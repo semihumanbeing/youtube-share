@@ -49,6 +49,7 @@
 .user-link {
   color: #fff; /* 흰색 글씨 색상 */
   text-decoration: none; /* 밑줄 제거 */
+  margin-right: 5px;
 }
 
 .user-link:hover {
@@ -73,6 +74,7 @@ body {
   color: white;
   text-align: center;
   padding: 10px 0;
+  font-size: 10px;
   position: absolute;
   bottom: 0;
   width: 100%;
