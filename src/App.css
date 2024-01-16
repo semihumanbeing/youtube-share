@@ -1,38 +1,79 @@
-.App {
+/* 사용자 인터페이스 공통 컨테이너 스타일 */
+.user-container {
+  max-width: 350px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+}
+.user-submit-container {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* 입력 필드 스타일 */
+.user-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* 버튼 스타일 */
+.user-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: #4caf50; /* 밝은 녹색 */
   color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.user-button:hover {
+  background-color: #45a049; /* 호버 시 약간 어두운 녹색 */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* 오류 메시지 스타일 */
+.error-message {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: hsl(44, 100%, 55%); /* 오류 메시지 색상 */
+  font-size: 12px;
+}
+
+/* 링크 스타일 */
+.user-link {
+  color: #fff; /* 흰색 글씨 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.user-link:hover {
+  text-decoration: underline; /* 호버 시 밑줄 표시 */
+}
+
+body {
+  background-color: #0b3d3d;
+  color: #fff;
+  font-family: "Arial", sans-serif;
+}
+
+/* 헤더 스타일 */
+.header {
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* 푸터 스타일 */
+.footer {
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
