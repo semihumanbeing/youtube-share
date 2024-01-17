@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const BASE_URL = "http://localhost:8080/api";
+
 const RegisterComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -56,16 +58,13 @@ const RegisterComponent = () => {
       }
 
       if (valid) {
-        const response = await fetch(
-          "http://localhost:8080/api/user/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password, email }),
-          }
-        );
+        const response = await fetch(`${BASE_URL}/user/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password, email }),
+        });
 
         if (response.ok) {
           console.log("Registration successful");

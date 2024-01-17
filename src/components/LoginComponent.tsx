@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import { LoginProps } from "../props/LoginProps";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { getUserIdFromJWT } from "../common/JwtUtil";
+
+const BASE_URL = "http://localhost:8080/api";
 
 const LoginComponent = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
   const [passwordInput, setPasswordInput] = useState(password);
   const [errors, setErrors] = useState({ email: "", password: "" });
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
   };
 
   const validatePassword = (password: string) => {
-    return password.length >= 6; // 6글자 이상이어야 함
+    return password.length >= 6;
   };
 
   const handleLogin = async () => {
@@ -35,28 +37,23 @@ const LoginComponent = ({ email, password }: LoginProps) => {
       return;
     }
 
-    const response = await fetch("http://localhost:8080/api/user/login", {
+    await fetch(`${BASE_URL}/user/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: emailInput, password: passwordInput }),
-    });
-
-    if (response.ok) {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("jwt="))
-        ?.split("=")[1];
-      if (token) {
-        const userId = getUserIdFromJWT(token);
-        if (userId) {
-          setUser({ userId });
-        }
-      }
-    } else {
-      alert("Login failed");
-    }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log("success");
+        setUser(response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (

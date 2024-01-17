@@ -7,15 +7,19 @@ const HeaderComponent = () => {
   const { user, setUser } = useUser();
 
   const handleLogout = async () => {
-    try {
-      await fetch("http://localhost:8080/api/user/logout", {
-        method: "POST",
+    await fetch("http://localhost:8080/api/user/logout", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        setUser(null);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
-      setUser(null);
-      navigate("/"); // 홈페이지로 리디렉션
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
   };
 
   return (
@@ -28,20 +32,28 @@ const HeaderComponent = () => {
       }}
     >
       <h1 style={{ fontFamily: "Roboto, sans-serif", textAlign: "left" }}>
-        YouTube Share
+        <Link to="/" className="user-link">
+          YouTube Share
+        </Link>
       </h1>
       <div>
-        {!user || !user.userId ? (
-          <>
+        {!user || !user.accessToken ? (
+          <div className="header">
             <Link to="/login" className="user-link">
               로그인
             </Link>
             <Link to="/signup" className="user-link">
               회원가입
             </Link>
-          </>
+          </div>
         ) : (
-          <button onClick={handleLogout}>로그아웃</button>
+          <div className="header">
+            {"Hello, "}
+            {user.username}{" "}
+            <button className="logout-button" onClick={handleLogout}>
+              로그아웃
+            </button>
+          </div>
         )}
       </div>
     </header>

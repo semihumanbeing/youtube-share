@@ -1,8 +1,10 @@
-// src/context/UserContext.tsx
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
-interface User {
-  userId: string;
+export interface User {
+  username: string;
+  accessToken: string;
+  refreshToken: string;
+  createdAt: Date;
 }
 
 interface UserContextProps {
@@ -25,7 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("useUser must be used within a UserProvider");
+    throw new Error("useUser must be used wisthin a UserProvider");
   }
   return context;
 };

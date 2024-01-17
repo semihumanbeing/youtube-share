@@ -52,10 +52,6 @@
   margin-right: 5px;
 }
 
-.user-link:hover {
-  text-decoration: underline; /* 호버 시 밑줄 표시 */
-}
-
 body {
   background-color: #0b3d3d;
   color: #fff;
@@ -63,12 +59,20 @@ body {
 }
 
 /* 헤더 스타일 */
-.header {
+header {
   color: white;
   text-align: center;
   padding: 10px 0;
+  height: 40px;
 }
 
+.logout-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  color: white;
+}
 /* 푸터 스타일 */
 .footer {
   color: white;
