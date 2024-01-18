@@ -6,6 +6,7 @@ import HeaderComponent from "./header/HeaderComponent";
 import FooterComponent from "./header/FooterComponent";
 import "./App.css";
 import { UserProvider } from "./context/UserContext";
+import ChatroomList from "./components/ChatroomList";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <UserProvider>
         <HeaderComponent />
         <Routes>
+          <Route path="/" element={<ChatroomList />} />
           <Route
             path="/login"
             element={<LoginComponent email="" password="" />}
