@@ -23,23 +23,23 @@ const ChatroomList = () => {
   const SIZE = 10;
 
   const fetchChatrooms = useCallback(
-    (pageNum: number) => {
+    (currentPage: number) => {
       if (!hasMore || loading) return;
       setLoading(true);
-      fetch(`${BASE_URL}/chatroom/all?page=${pageNum}&size=${SIZE}`, {
+      fetch(`${BASE_URL}/chatroom/all?page=${page}&size=${SIZE}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then((result) => {
           setChatrooms((prevChatrooms) => [
             ...prevChatrooms,
-            ...data.data.content,
+            ...result.data.content,
           ]);
-          setPage(pageNum + 1);
-          setHasMore(data.data.content.length > 0);
+          setPage(currentPage + 1);
+          setHasMore(!result.data.last);
         })
         .catch((error) => {
           console.error("Error fetching chatrooms:", error);
