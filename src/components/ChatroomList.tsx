@@ -34,10 +34,16 @@ const ChatroomList = () => {
       })
         .then((response) => response.json())
         .then((result) => {
-          setChatrooms((prevChatrooms) => [
-            ...prevChatrooms,
-            ...result.data.content,
-          ]);
+          setChatrooms((prevChatrooms) => {
+            const newChatrooms = result.data.content.filter(
+              (newChatroom: Chatroom) =>
+                !prevChatrooms.some(
+                  (prevChatroom) =>
+                    prevChatroom.chatroomId === newChatroom.chatroomId
+                )
+            );
+            return [...prevChatrooms, ...newChatrooms];
+          });
           setPage(currentPage + 1);
           setHasMore(!result.data.last);
         })
