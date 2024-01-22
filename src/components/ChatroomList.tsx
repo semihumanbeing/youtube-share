@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Chatroom {
   chatroomId: number;
@@ -19,6 +20,7 @@ const ChatroomList = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const BASE_URL = "http://localhost:8080/api";
   const SIZE = 10;
 
@@ -88,7 +90,11 @@ const ChatroomList = () => {
   return (
     <div className="chatroom-container">
       {chatrooms.map((chatroom) => (
-        <div key={chatroom.chatroomId} className="chatroom-block">
+        <div
+          key={chatroom.chatroomId}
+          className="chatroom-block"
+          //onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
+        >
           <div className="chatroom-emoji">{chatroom.emoji}</div>
           <div className="chatroom-name">{chatroom.chatroomName}</div>
           <span>
