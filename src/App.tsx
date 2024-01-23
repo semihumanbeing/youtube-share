@@ -1,27 +1,26 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoginComponent from "./components/LoginComponent";
-import RegisterComponent from "./components/RegisterComponent";
-import HeaderComponent from "./header/HeaderComponent";
-import FooterComponent from "./header/FooterComponent";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Header from "./header/Header";
+import Footer from "./header/Footer";
 import "./App.css";
-import { UserProvider } from "./context/UserContext";
+import { UserProvider } from "./reducer/UserContext";
 import ChatroomList from "./components/ChatroomList";
+import Chatroom from "./components/Chatroom";
 
 const App = () => {
   return (
     <Router>
       <UserProvider>
-        <HeaderComponent />
+        <Header />
         <Routes>
           <Route path="/" element={<ChatroomList />} />
-          <Route
-            path="/login"
-            element={<LoginComponent email="" password="" />}
-          />
-          <Route path="/signup" element={<RegisterComponent />} />
+          <Route path="/chatroom/:chatroomId" element={<Chatroom />} />
+          <Route path="/login" element={<Login email="" password="" />} />
+          <Route path="/signup" element={<Register />} />
         </Routes>
-        <FooterComponent />
+        <Footer />
       </UserProvider>
     </Router>
   );

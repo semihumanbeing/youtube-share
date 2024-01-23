@@ -21,14 +21,14 @@ const ChatroomList = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:8080/api";
+  const BASE_URL = "http://localhost:8080/api/chatroom";
   const SIZE = 10;
 
   const fetchChatrooms = useCallback(
     (currentPage: number) => {
       if (!hasMore || loading) return;
       setLoading(true);
-      fetch(`${BASE_URL}/chatroom/all?page=${page}&size=${SIZE}`, {
+      fetch(`${BASE_URL}/all?page=${page}&size=${SIZE}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const ChatroomList = () => {
           setLoading(false);
         });
     },
-    [loading, hasMore]
+    [page, loading, hasMore]
   );
 
   // 초기 채팅방 로드
@@ -93,7 +93,7 @@ const ChatroomList = () => {
         <div
           key={chatroom.chatroomId}
           className="chatroom-block"
-          //onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
+          onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
         >
           <div className="chatroom-emoji">{chatroom.emoji}</div>
           <div className="chatroom-name">{chatroom.chatroomName}</div>

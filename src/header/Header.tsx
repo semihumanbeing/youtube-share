@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../reducer/UserContext";
 
-const HeaderComponent = () => {
+const Header = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUser();
 
@@ -60,4 +60,4 @@ const HeaderComponent = () => {
   );
 };
 
-export default HeaderComponent;
+export default Header;

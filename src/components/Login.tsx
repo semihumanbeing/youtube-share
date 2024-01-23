@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { LoginProps } from "../props/LoginProps";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../reducer/UserContext";
 
 const BASE_URL = "http://localhost:8080/api";
 
-const LoginComponent = ({ email, password }: LoginProps) => {
+const Login = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
   const [passwordInput, setPasswordInput] = useState(password);
   const [errors, setErrors] = useState({ email: "", password: "" });
@@ -94,4 +94,4 @@ const LoginComponent = ({ email, password }: LoginProps) => {
   );
 };
 
-export default LoginComponent;
+export default Login;

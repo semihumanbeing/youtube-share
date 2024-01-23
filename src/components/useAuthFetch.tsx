@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { User, useUser } from "../context/UserContext";
+import { User, useUser } from "../reducer/UserContext";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 

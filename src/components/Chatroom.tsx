@@ -1,0 +1,90 @@
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useUser } from "../reducer/UserContext";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+
+interface ChatMessage {
+  chatroomId: string;
+  username: string;
+  message: string;
+}
+
+const Chatroom = () => {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [stompClient, setStompClient] = useState<any>(null);
+  const { chatroomId } = useParams<{ chatroomId: string }>();
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const socket = new SockJS("http://127.0.0.1:8080/stomp");
+    const client = Stomp.over(socket);
+
+    client.connect({}, () => {
+      client.subscribe(
+        `/sub/chat/room/${chatroomId}`,
+        (response: { body: string }) => {
+          const chatMessage: ChatMessage = JSON.parse(response.body);
+          setMessages((prevMessages) => [...prevMessages, chatMessage]);
+        }
+      );
+    });
+
+    setStompClient(client);
+
+    return () => {
+      client.disconnect(() => {
+        console.log("Disconnected");
+      });
+    };
+  }, [chatroomId]);
+
+  const sendMessage = (): void => {
+    if (!newMessage.trim() || !user || !chatroomId) {
+      return;
+    }
+
+    const msg: ChatMessage = {
+      chatroomId,
+      username: user.username,
+      message: newMessage,
+    };
+
+    stompClient.send(`/pub/chat/message`, {}, JSON.stringify(msg));
+    setNewMessage("");
+  };
+
+  return (
+    <div className="chat-container">
+      <div className="chat-messages">
+        {messages.map((msg, index) => (
+          <div key={index} className="chat-message">
+            <strong>{msg.username}: </strong>
+            {msg.message}
+          </div>
+        ))}
+      </div>
+      <div>
+        <input
+          className="chat-input"
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendMessage();
+            }
+          }}
+          placeholder="Type your message here"
+        />
+        <button className="chat-button" onClick={sendMessage}>
+          Send
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Chatroom;

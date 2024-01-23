@@ -1,6 +1,6 @@
 import React from "react";
 
-const FooterComponent = () => {
+const Footer = () => {
   return (
     <footer className="footer">
       <p>© 2024 dahee ryu</p>
@@ -8,4 +8,4 @@ const FooterComponent = () => {
   );
 };
 
-export default FooterComponent;
+export default Footer;
