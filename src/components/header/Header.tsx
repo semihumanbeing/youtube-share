@@ -1,26 +1,10 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../reducer/UserContext";
+import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/states";
+import LogoutHandler from "../../handler/LogoutHandler";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const { user, setUser } = useUser();
-
-  const handleLogout = async () => {
-    await fetch("http://localhost:8080/api/user/logout", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        setUser(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+  const [user] = useRecoilState(userState);
 
   return (
     <header
@@ -49,10 +33,8 @@ const Header = () => {
         ) : (
           <div className="header">
             {"Hello, "}
-            {user.username}{" "}
-            <button className="logout-button" onClick={handleLogout}>
-              로그아웃
-            </button>
+            {user.username}
+            <LogoutHandler />
           </div>
         )}
       </div>

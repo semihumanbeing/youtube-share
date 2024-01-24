@@ -1,65 +1,60 @@
 import { useContext } from "react";
-import { User, useUser } from "../reducer/UserContext";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useRecoilState } from "recoil";
+import {
+  userState,
+  accessTokenState,
+  refreshTokenState,
+} from "../state/states";
 
 const useAuthFetch = () => {
-  const { user, setUser } = useUser();
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [refreshToken] = useRecoilState(refreshTokenState);
+  const [user, setUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   const isTokenExpired = (token: string) => {
     try {
-      const decoded = jwtDecode(token);
+      const decoded: { exp?: number } = jwtDecode(token);
       const currentTime = Date.now() / 1000;
 
-      // decoded.exp가 undefined일 경우를 고려하여 안전하게 처리
       return (decoded?.exp ?? 0) < currentTime;
     } catch (error) {
       console.error("Error decoding token:", error);
-      return true; // 디코딩 중 에러가 발생하면 토큰을 만료된 것으로 간주
+      return true;
     }
   };
+
   const authFetch = async (url: string, options: RequestInit = {}) => {
-    if (!user) {
-      throw new Error("No user available");
+    if (!accessToken) {
+      throw new Error("No access token available");
     }
 
     let response = await fetch(url, {
       ...options,
-      headers: {
-        ...options.headers,
-      },
+      credentials: "include", // 쿠키 포함
     });
 
-    if (response.status === 401 && isTokenExpired(user.accessToken)) {
+    // 401 상태 코드 및 토큰 만료 확인
+    if (response.status === 401 || isTokenExpired(accessToken)) {
       const refreshResponse = await fetch(
         "http://localhost:8080/api/user/refresh",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: user.refreshToken }),
+          credentials: "include", // 쿠키 포함
         }
       );
 
       if (refreshResponse.ok) {
-        const refreshedTokens: { accessToken: string } =
-          await refreshResponse.json();
-        setUser(
-          (prev) =>
-            ({
-              ...prev,
-              accessToken: refreshedTokens.accessToken,
-            } as User)
-        );
+        const refreshedTokens = await refreshResponse.json();
+        setAccessToken(refreshedTokens.accessToken);
+        setUser({ ...user, accessToken: refreshedTokens.accessToken });
 
+        // 새로운 토큰으로 재요청
         response = await fetch(url, {
-          credentials: "include",
           ...options,
-          headers: {
-            ...options.headers,
-          },
+          credentials: "include",
         });
       } else {
         setUser(null);
@@ -72,5 +67,3 @@ const useAuthFetch = () => {
 
   return authFetch;
 };
-
-export default useAuthFetch;

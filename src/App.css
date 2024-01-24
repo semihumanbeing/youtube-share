@@ -3,6 +3,7 @@
   max-width: 350px;
   margin: 40px auto;
   padding: 20px;
+  padding-top: 60px;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 15px;
 }
@@ -54,18 +55,44 @@
 }
 
 body {
+  padding-top: 60px;
   background-color: #121212; /* 매우 어두운 배경 */
   color: #fff;
   font-family: "Arial", sans-serif;
+  /* Custom scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+}
+/* For Webkit browsers like Chrome, Safari */
+body::-webkit-scrollbar {
+  width: 8px;
 }
 
+body::-webkit-scrollbar-track {
+  background: #333;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 /* 헤더 스타일 */
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   background-color: #1c1c1c;
   color: white;
   text-align: center;
   padding: 10px 0;
   height: 40px;
+  z-index: 1000;
 }
 
 .logout-button {
@@ -126,15 +153,15 @@ header {
 /* ////////////////////// Chatroom //////////////////// */
 .chat-container {
   width: 20%;
-  height: calc(100vh - 50px);
+  height: 100vh;
   position: fixed;
   right: 0;
   top: 50px;
   margin: auto;
   padding: 10px;
-  border: 1px solid #333; /* 어두운 테두리 */
-  background-color: #1a1a1a; /* 어두운 배경색 */
-  color: white; /* 밝은 텍스트 색상 */
+  border: 1px solid #333;
+  background-color: #1a1a1a;
+  color: white;
 }
 
 .chat-messages {
@@ -145,15 +172,38 @@ header {
   padding: 10px;
   background-color: #333;
   color: white;
+  /* Custom scrollbar styles */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+}
+
+/* For Webkit browsers like Chrome, Safari */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #333;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .chat-message {
-  margin-bottom: 10px;
+  font-size: smaller;
+  margin-bottom: 7px;
 }
 
 .chat-input {
-  width: calc(100% - 70px);
-  padding: 10px; /* 패딩을 늘림 */
+  width: calc(100% - 90px);
+  padding: 10px;
   border: 1px solid #555;
   background-color: #333;
   color: white;
@@ -172,7 +222,7 @@ header {
 }
 
 .chat-button:hover {
-  background-color: #4e4e4e; /* 버튼 호버 시 색상 */
+  background-color: #4e4e4e;
 }
 
 input:focus,

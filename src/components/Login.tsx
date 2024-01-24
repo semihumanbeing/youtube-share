@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import { LoginProps } from "../props/LoginProps";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from "../reducer/UserContext";
+import { useRecoilState } from "recoil";
+import {
+  userState,
+  accessTokenState,
+  refreshTokenState,
+} from "../state/states";
+import { ERROR_MESSAGES } from "../props/ErrorMessages";
+
+interface ErrorState {
+  general?: string;
+  email?: string;
+  password?: string;
+}
 
 const BASE_URL = "http://localhost:8080/api";
 
 const Login = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
   const [passwordInput, setPasswordInput] = useState(password);
-  const [errors, setErrors] = useState({ email: "", password: "" });
-  const { setUser } = useUser();
+  const [errors, setErrors] = useState<ErrorState>({});
+  const [user, setUser] = useRecoilState(userState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
@@ -21,7 +35,6 @@ const Login = ({ email, password }: LoginProps) => {
   };
 
   const handleLogin = async () => {
-    // 유효성 검사
     if (!validateEmail(emailInput)) {
       setErrors((prev) => ({
         ...prev,
@@ -47,18 +60,34 @@ const Login = ({ email, password }: LoginProps) => {
     })
       .then((response) => response.json())
       .then((response) => {
+        if (!response.ok) {
+          const errorCode = response.errorCode as string;
+          console.log(errorCode);
+          const errorMessage =
+            ERROR_MESSAGES[errorCode] || "로그인에 실패했습니다.";
+          setErrors({ ...errors, general: errorMessage });
+          return;
+        }
         console.log("success");
         setUser(response.data);
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
         navigate("/");
       })
-      .catch((error) => {
-        console.error("Error:", error);
+      .catch((error: any) => {
+        console.error("Error during login", error);
+        setErrors({ ...errors, general: "로그인에 실패했습니다." });
+        return;
       });
   };
 
   return (
     <div className="user-container">
       <h2>Log in</h2>
+      {errors.general && <p className="error-message">{errors.general}</p>}
       {errors.email && <p className="error-message">{errors.email}</p>}
       <input
         className="user-input"
@@ -68,7 +97,12 @@ const Login = ({ email, password }: LoginProps) => {
           setEmailInput(e.target.value);
           setErrors((prev) => ({ ...prev, email: "" }));
         }}
-        placeholder="이메일"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleLogin();
+          }
+        }}
+        placeholder="Email"
       />
       {errors.password && <p className="error-message">{errors.password}</p>}
       <input
@@ -79,15 +113,20 @@ const Login = ({ email, password }: LoginProps) => {
           setPasswordInput(e.target.value);
           setErrors((prev) => ({ ...prev, password: "" }));
         }}
-        placeholder="비밀번호"
+        placeholder="Password"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleLogin();
+          }
+        }}
       />
 
       <div className="user-submit-container">
         <button className="user-button" onClick={handleLogin}>
-          로그인
+          Sign In
         </button>
         <Link className="user-link" to="/signup">
-          회원가입
+          Sign Up
         </Link>
       </div>
     </div>

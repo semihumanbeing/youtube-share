@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useUser } from "../reducer/UserContext";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/states";
 
 interface ChatMessage {
   chatroomId: string;
@@ -15,12 +16,11 @@ const Chatroom = () => {
   const [newMessage, setNewMessage] = useState("");
   const [stompClient, setStompClient] = useState<any>(null);
   const { chatroomId } = useParams<{ chatroomId: string }>();
-  const { user } = useUser();
+  const [user] = useRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const socket = new SockJS("http://127.0.0.1:8080/stomp");
-    const client = Stomp.over(socket);
+    const client = Stomp.over(() => new SockJS("http://127.0.0.1:8080/stomp"));
 
     client.connect({}, () => {
       client.subscribe(
@@ -56,15 +56,23 @@ const Chatroom = () => {
     setNewMessage("");
   };
 
+  // 메시지 발생 시 제일 아래의 메시지로 스크롤
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (messageEndRef.current != null) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <div className="chat-container">
       <div className="chat-messages">
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
-            <strong>{msg.username}: </strong>
-            {msg.message}
+            {msg.username}: {msg.message}
           </div>
         ))}
+        <div ref={messageEndRef}></div>
       </div>
       <div>
         <input
