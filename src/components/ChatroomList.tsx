@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { PasswordModal } from "./modal/PasswordModal";
 
 interface Chatroom {
   chatroomId: number;
@@ -20,6 +21,11 @@ const ChatroomList = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [selectedChatroom, setSelectedChatroom] = useState<Chatroom | null>(
+    null
+  );
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:8080/api/chatroom";
   const SIZE = 12;
@@ -59,11 +65,31 @@ const ChatroomList = () => {
     [page, loading, hasMore]
   );
 
+  const handleChatroomClick = (chatroom: Chatroom) => {
+    if (chatroom.hasPwd) {
+      setSelectedChatroom(chatroom);
+      setIsModalOpen(true);
+    } else {
+      navigate(`/chatroom/${chatroom.chatroomId}`);
+    }
+  };
+
+  const handlePasswordConfirm = (password: string) => {
+    if (selectedChatroom && password === selectedChatroom.chatroomPassword) {
+      navigate(`/chatroom/${selectedChatroom.chatroomId}`);
+    } else {
+      alert("Incorrect password.");
+      return;
+    }
+    setIsModalOpen(false);
+  };
+
   // 초기 채팅방 로드
   useEffect(() => {
     fetchChatrooms(page);
   }, []);
 
+  // 스크롤이 화면 아래에 도달할 시 다음 페이지 불러오기
   const loadMoreChatrooms = useCallback(() => {
     fetchChatrooms(page);
   }, [page]);
@@ -93,7 +119,7 @@ const ChatroomList = () => {
         <div
           key={chatroom.chatroomId}
           className="chatroom-block"
-          onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
+          onClick={() => handleChatroomClick(chatroom)}
         >
           <div className="chatroom-emoji">{chatroom.emoji}</div>
           <div className="chatroom-name">{chatroom.chatroomName}</div>
@@ -108,7 +134,11 @@ const ChatroomList = () => {
           </div>
         </div>
       ))}
-      <div className="chatroom-end"></div>
+      <PasswordModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handlePasswordConfirm}
+      />
     </div>
   );
 };
