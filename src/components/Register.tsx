@@ -18,6 +18,10 @@ const RegisterComponent = () => {
     return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
   };
 
+  const validateUsername = (username: string) => {
+    return username.length <= 10; // 10글자 이하여야 함
+  };
+
   const validatePassword = (password: string) => {
     return password.length >= 6; // 6글자 이상이어야 함
   };
@@ -36,7 +40,7 @@ const RegisterComponent = () => {
       if (!validateEmail(email) || !isValidInput(email)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          email: "유효한 이메일 주소를 입력하세요.",
+          email: "Email address is not valid.",
         }));
         valid = false;
       }
@@ -44,15 +48,15 @@ const RegisterComponent = () => {
       if (!validatePassword(password) || !isValidInput(password)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          password: "비밀번호는 6자 이상이어야 합니다.",
+          password: "Password Must be a minimum of 6 characters.",
         }));
         valid = false;
       }
 
-      if (!isValidInput(username) || !isValidInput(username)) {
+      if (!isValidInput(username) || !validateUsername(username)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          username: "유효하지 않은 사용자명입니다.",
+          username: "Username is not valid or more than 10 characters.",
         }));
         valid = false;
       }
@@ -87,7 +91,7 @@ const RegisterComponent = () => {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="이메일"
+        placeholder="Email"
       />
       {errors.password && <p className="error-message">{errors.password}</p>}
       <input
@@ -95,7 +99,7 @@ const RegisterComponent = () => {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="비밀번호"
+        placeholder="Password (more than 6 characters)"
       />
       {errors.username && <p className="error-message">{errors.username}</p>}
       <input
@@ -103,7 +107,7 @@ const RegisterComponent = () => {
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        placeholder="닉네임"
+        placeholder="Nickname (less than 10 characters)"
       />
 
       <div className="user-submit-container">

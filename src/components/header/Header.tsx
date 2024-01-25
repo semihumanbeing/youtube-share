@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/states";
@@ -7,6 +7,7 @@ import useInitializeAuth from "../../hooks/useInitializeAuth";
 
 const Header = () => {
   const [user] = useRecoilState(userState);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
     <header
@@ -34,8 +35,23 @@ const Header = () => {
           </div>
         ) : (
           <div className="header">
-            {"Hello, "}
-            {user.username}
+            <button
+              className="header-button"
+              onClick={() => setIsMenuVisible(!isMenuVisible)}
+            >
+              {"Hello, "}
+              {user.username}
+            </button>
+            {isMenuVisible && (
+              <div className="dropdown-menu">
+                <Link to="/my-chatrooms" className="dropdown-item">
+                  내 채팅방 보기
+                </Link>
+                <Link to="/create-chatroom" className="dropdown-item">
+                  채팅방 만들기
+                </Link>
+              </div>
+            )}
             <LogoutHandler />
           </div>
         )}

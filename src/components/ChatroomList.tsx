@@ -22,7 +22,7 @@ const ChatroomList = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const BASE_URL = "http://localhost:8080/api/chatroom";
-  const SIZE = 10;
+  const SIZE = 12;
 
   const fetchChatrooms = useCallback(
     (currentPage: number) => {
@@ -102,11 +102,13 @@ const ChatroomList = () => {
             {chatroom.userCount}/{chatroom.maxUserCount}
             {")"}
           </span>
+          {chatroom.hasPwd && <span className="lock-icon">🔒</span>}
           <div className="chatroom-info">
             <span>By {chatroom.username}</span>
           </div>
         </div>
       ))}
+      <div className="chatroom-end"></div>
     </div>
   );
 };

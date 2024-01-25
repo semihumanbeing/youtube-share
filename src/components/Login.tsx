@@ -62,9 +62,6 @@ const Login = ({ email, password }: LoginProps) => {
           setErrors({ ...errors, general: errorMessage });
           return;
         }
-        console.log(
-          "response data json stringify: " + JSON.stringify(response.data)
-        );
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");

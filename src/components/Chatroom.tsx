@@ -66,6 +66,21 @@ const Chatroom = () => {
     }
   }, [messages]);
 
+  // 새로고침 막기
+  const preventClose = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+  useEffect(() => {
+    (() => {
+      window.addEventListener("beforeunload", preventClose);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", preventClose);
+    };
+  }, []);
+
   return (
     <div className="chat-container">
       <div className="chat-messages">
