@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { LoginProps } from "../props/LoginProps";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {
-  userState,
-  accessTokenState,
-  refreshTokenState,
-} from "../state/states";
+import { userState } from "../state/states";
 import { ERROR_MESSAGES } from "../props/ErrorMessages";
 
 interface ErrorState {
@@ -22,8 +18,6 @@ const Login = ({ email, password }: LoginProps) => {
   const [passwordInput, setPasswordInput] = useState(password);
   const [errors, setErrors] = useState<ErrorState>({});
   const [user, setUser] = useRecoilState(userState);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
-  const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
@@ -60,7 +54,7 @@ const Login = ({ email, password }: LoginProps) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (!response.ok) {
+        if (!response.data) {
           const errorCode = response.errorCode as string;
           console.log(errorCode);
           const errorMessage =
@@ -68,13 +62,11 @@ const Login = ({ email, password }: LoginProps) => {
           setErrors({ ...errors, general: errorMessage });
           return;
         }
-        console.log("success");
+        console.log(
+          "response data json stringify: " + JSON.stringify(response.data)
+        );
         setUser(response.data);
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
         localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
         navigate("/");
       })
       .catch((error: any) => {

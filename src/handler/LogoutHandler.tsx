@@ -1,17 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {
-  userState,
-  accessTokenState,
-  refreshTokenState,
-} from "../state/states";
+import { userState } from "../state/states";
 
 const LogoutHandler = () => {
   const navigate = useNavigate();
   const [, setUser] = useRecoilState(userState);
-  const [, setAccessToken] = useRecoilState(accessTokenState);
-  const [, setRefreshToken] = useRecoilState(refreshTokenState);
 
   const handleLogout = async () => {
     const user = localStorage.getItem("user");
@@ -38,8 +32,6 @@ const LogoutHandler = () => {
 
   const clearLocalStorageAndNavigate = () => {
     setUser(null);
-    setAccessToken("");
-    setRefreshToken("");
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");

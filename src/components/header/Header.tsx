@@ -1,7 +1,9 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/states";
 import LogoutHandler from "../../handler/LogoutHandler";
+import useInitializeAuth from "../../hooks/useInitializeAuth";
 
 const Header = () => {
   const [user] = useRecoilState(userState);

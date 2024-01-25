@@ -4,6 +4,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { useRecoilState } from "recoil";
 import { userState } from "../state/states";
+import useInitializeAuth from "../hooks/useInitializeAuth";
 
 interface ChatMessage {
   chatroomId: string;
@@ -17,7 +18,8 @@ const Chatroom = () => {
   const [stompClient, setStompClient] = useState<any>(null);
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [user] = useRecoilState(userState);
-  const navigate = useNavigate();
+
+  useInitializeAuth();
 
   useEffect(() => {
     const client = Stomp.over(() => new SockJS("http://127.0.0.1:8080/stomp"));

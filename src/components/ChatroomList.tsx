@@ -66,7 +66,7 @@ const ChatroomList = () => {
 
   const loadMoreChatrooms = useCallback(() => {
     fetchChatrooms(page);
-  }, [page, fetchChatrooms]);
+  }, [page]);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;

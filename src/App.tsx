@@ -19,7 +19,6 @@ const App = () => {
 };
 
 const AppContent = () => {
-  useInitializeAuth();
   return (
     <Router>
       <Header />
