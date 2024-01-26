@@ -66,22 +66,45 @@ const ChatroomList = () => {
   );
 
   const handleChatroomClick = (chatroom: Chatroom) => {
+    if (chatroom.userCount >= chatroom.maxUserCount) {
+      alert("Chatroom is full!!");
+    }
     if (chatroom.hasPwd) {
       setSelectedChatroom(chatroom);
       setIsModalOpen(true);
     } else {
-      navigate(`/chatroom/${chatroom.chatroomId}`);
+      enterChatroom(`${chatroom.chatroomId}`);
     }
   };
 
   const handlePasswordConfirm = (password: string) => {
     if (selectedChatroom && password === selectedChatroom.chatroomPassword) {
-      navigate(`/chatroom/${selectedChatroom.chatroomId}`);
+      enterChatroom(`${selectedChatroom.chatroomId}`);
     } else {
       alert("Incorrect password.");
       return;
     }
     setIsModalOpen(false);
+  };
+
+  const enterChatroom = async (chatroomId: string) => {
+    await fetch(`http://localhost:8080/api/chatroom/enter/${chatroomId}`, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setChatrooms((prevChatrooms) =>
+          prevChatrooms.map((chatroom) =>
+            chatroom.chatroomId === response.data.chatroomId
+              ? // TODO: user count 숫자변환
+                { ...chatroom, userCount: response.data.userCount }
+              : chatroom
+          )
+        );
+      });
+    // TODO : 응답받은 결과를 setUserCount에 업데이트한다
+    navigate(`/chatroom/${chatroomId}`);
   };
 
   // 초기 채팅방 로드

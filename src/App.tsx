@@ -27,6 +27,8 @@ const AppContent = () => {
     <BrowserRouter basename="/youtube-share">
       <Header />
       <Routes>
+        <Route path="/my-chatrooms" element={<>hi</>} />
+        <Route path="/create-chatroom" element={<>hello</>} />
         <Route path="/" element={<ChatroomList />} />
         <Route path="/chatroom/:chatroomId" element={<ChatroomPage />} />
         <Route path="/login" element={<Login email="" password="" />} />

@@ -23,10 +23,12 @@ const Header = () => {
         padding: "10px",
       }}
     >
-      <h1 style={{ fontFamily: "Roboto, sans-serif", textAlign: "left" }}>
-        <h2 className="user-link" onClick={handleRefresh}>
-          YouTube Share
-        </h2>
+      <h1
+        style={{ fontFamily: "Roboto, sans-serif", textAlign: "left" }}
+        className="user-link"
+        onClick={handleRefresh}
+      >
+        YouTube Share
       </h1>
       <div>
         {!user || !user.accessToken ? (
