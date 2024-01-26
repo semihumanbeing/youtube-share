@@ -52,6 +52,7 @@
   color: #fff; /* 흰색 글씨 색상 */
   text-decoration: none; /* 밑줄 제거 */
   margin-right: 5px;
+  cursor: pointer;
 }
 
 body {
@@ -342,4 +343,15 @@ header {
 input:focus,
 button:focus {
   outline: none;
+}
+
+.no-video {
+  height: 210px;
+  width: 650px;
+  font-size: 20pt;
+  text-align: center;
+  padding-top: 150px;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #4e4e4e;
 }

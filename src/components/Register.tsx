@@ -112,10 +112,10 @@ const RegisterComponent = () => {
 
       <div className="user-submit-container">
         <button className="user-button" onClick={handleRegister}>
-          회원가입
+          Sign Up
         </button>
         <Link className="user-link" to="/login">
-          로그인
+          Log In
         </Link>
       </div>
     </div>

@@ -9,9 +9,8 @@ const LogoutHandler = () => {
 
   const handleLogout = async () => {
     const user = localStorage.getItem("user");
-    const accessToken = localStorage.getItem("accessToken");
 
-    if (!user || !accessToken) {
+    if (!user) {
       clearLocalStorageAndNavigate();
       return;
     }
@@ -33,8 +32,6 @@ const LogoutHandler = () => {
   const clearLocalStorageAndNavigate = () => {
     setUser(null);
     localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
     navigate("/");
   };
 

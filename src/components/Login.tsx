@@ -112,7 +112,7 @@ const Login = ({ email, password }: LoginProps) => {
 
       <div className="user-submit-container">
         <button className="user-button" onClick={handleLogin}>
-          Sign In
+          Log In
         </button>
         <Link className="user-link" to="/signup">
           Sign Up

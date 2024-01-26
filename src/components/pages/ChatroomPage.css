@@ -1,0 +1,6 @@
+/* src/ChatroomPage.css */
+.chatroom-page {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}

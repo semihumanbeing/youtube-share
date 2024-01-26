@@ -9,6 +9,11 @@ const Header = () => {
   const [user] = useRecoilState(userState);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const handleRefresh = (e: any) => {
+    e.preventDefault();
+    window.location.replace("/youtube-share");
+  };
+
   return (
     <header
       style={{
@@ -19,9 +24,9 @@ const Header = () => {
       }}
     >
       <h1 style={{ fontFamily: "Roboto, sans-serif", textAlign: "left" }}>
-        <Link to="/" className="user-link">
+        <h2 className="user-link" onClick={handleRefresh}>
           YouTube Share
-        </Link>
+        </h2>
       </h1>
       <div>
         {!user || !user.accessToken ? (

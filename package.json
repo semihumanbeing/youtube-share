@@ -2,6 +2,7 @@
   "name": "youtube-share-web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://semihumanbeing.github.io/youtube-share",
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "@stomp/stompjs": "^7.0.0",
@@ -19,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",
+    "react-youtube": "^10.1.0",
     "recoil": "^0.7.7",
     "redux-persist": "^6.0.0",
     "sockjs": "^0.3.24",
