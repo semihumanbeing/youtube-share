@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PasswordModal } from "./modal/PasswordModal";
 
 interface Chatroom {
-  chatroomId: number;
+  chatroomId: string;
   userId: number;
   username: string;
   chatroomName: string;
@@ -65,46 +65,14 @@ const ChatroomList = () => {
     [page, loading, hasMore]
   );
 
-  const handleChatroomClick = (chatroom: Chatroom) => {
-    if (chatroom.userCount >= chatroom.maxUserCount) {
-      alert("Chatroom is full!!");
-    }
-    if (chatroom.hasPwd) {
-      setSelectedChatroom(chatroom);
-      setIsModalOpen(true);
-    } else {
-      enterChatroom(`${chatroom.chatroomId}`);
-    }
-  };
-
   const handlePasswordConfirm = (password: string) => {
     if (selectedChatroom && password === selectedChatroom.chatroomPassword) {
-      enterChatroom(`${selectedChatroom.chatroomId}`);
+      navigate(`/chatroom/${selectedChatroom.chatroomId}`);
     } else {
       alert("Incorrect password.");
       return;
     }
     setIsModalOpen(false);
-  };
-
-  const enterChatroom = async (chatroomId: string) => {
-    await fetch(`http://localhost:8080/api/chatroom/enter/${chatroomId}`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setChatrooms((prevChatrooms) =>
-          prevChatrooms.map((chatroom) =>
-            chatroom.chatroomId === response.data.chatroomId
-              ? // TODO: user count 숫자변환
-                { ...chatroom, userCount: response.data.userCount }
-              : chatroom
-          )
-        );
-      });
-    // TODO : 응답받은 결과를 setUserCount에 업데이트한다
-    navigate(`/chatroom/${chatroomId}`);
   };
 
   // 초기 채팅방 로드
@@ -142,7 +110,7 @@ const ChatroomList = () => {
         <div
           key={chatroom.chatroomId}
           className="chatroom-block"
-          onClick={() => handleChatroomClick(chatroom)}
+          onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
         >
           <div className="chatroom-emoji">{chatroom.emoji}</div>
           <div className="chatroom-name">{chatroom.chatroomName}</div>

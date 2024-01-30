@@ -25,6 +25,7 @@ const Chatroom = () => {
     const client = Stomp.over(() => new SockJS("http://127.0.0.1:8080/stomp"));
 
     client.connect({}, () => {
+      client.send(`/pub/chatroom/${chatroomId}/connect`, {}, "");
       client.subscribe(
         `/sub/chat/room/${chatroomId}`,
         (response: { body: string }) => {
