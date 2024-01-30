@@ -13,6 +13,7 @@ import "./App.css";
 import ChatroomList from "./components/ChatroomList";
 import { RecoilRoot } from "recoil";
 import ChatroomPage from "./components/pages/ChatroomPage";
+import MyChatroomList from "./components/MyChatroomList";
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const AppContent = () => {
     <BrowserRouter basename="/youtube-share">
       <Header />
       <Routes>
-        <Route path="/my-chatrooms" element={<>hi</>} />
+        <Route path="/my-chatrooms" element={<MyChatroomList />} />
         <Route path="/create-chatroom" element={<>hello</>} />
         <Route path="/" element={<ChatroomList />} />
         <Route path="/chatroom/:chatroomId" element={<ChatroomPage />} />
