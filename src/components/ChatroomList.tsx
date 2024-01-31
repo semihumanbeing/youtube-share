@@ -27,7 +27,7 @@ const ChatroomList = () => {
     null
   );
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:8080/api/chatroom";
+  const BASE_URL = "http://127.0.0.1:8080/api/chatroom";
   const SIZE = 12;
 
   const fetchChatrooms = useCallback(

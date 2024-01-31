@@ -5,7 +5,7 @@ const VideoPlayer = () => {
   const [videoId, setVideoId] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/video/next", { credentials: "include" })
+    fetch("http://127.0.0.1:8080/api/video/next", { credentials: "include" })
       .then((response) => response.json())
       .then((response) => {
         const urlParams = new URLSearchParams(
