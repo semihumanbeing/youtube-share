@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://127.0.0.1:8080/api";
 
 const RegisterComponent = () => {
   const [username, setUsername] = useState("");

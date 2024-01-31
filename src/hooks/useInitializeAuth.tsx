@@ -20,7 +20,7 @@ const useInitializeAuth = () => {
   };
 
   const refreshAccessToken = async (refreshToken: string) => {
-    await fetch("http://localhost:8080/api/user/refresh", {
+    await fetch("http://127.0.0.1:8080/api/user/refresh", {
       method: "POST",
       credentials: "include",
       headers: {

@@ -11,7 +11,7 @@ interface ErrorState {
   password?: string;
 }
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://127.0.0.1:8080/api";
 
 const Login = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
