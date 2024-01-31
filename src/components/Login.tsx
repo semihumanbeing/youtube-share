@@ -11,8 +11,6 @@ interface ErrorState {
   password?: string;
 }
 
-const BASE_URL = "http://127.0.0.1:8080/api";
-
 const Login = ({ email, password }: LoginProps) => {
   const [emailInput, setEmailInput] = useState(email);
   const [passwordInput, setPasswordInput] = useState(password);
@@ -44,7 +42,7 @@ const Login = ({ email, password }: LoginProps) => {
       return;
     }
 
-    await fetch(`${BASE_URL}/user/login`, {
+    await fetch(`${process.env.REACT_APP_BASE_URL}/user/login`, {
       method: "POST",
       credentials: "include",
       headers: {

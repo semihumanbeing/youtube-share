@@ -16,10 +16,13 @@ const LogoutHandler = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8080/api/user/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/user/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       console.log("Logout Success:", data);
     } catch (error) {

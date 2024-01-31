@@ -27,19 +27,22 @@ const ChatroomList = () => {
     null
   );
   const navigate = useNavigate();
-  const BASE_URL = "http://127.0.0.1:8080/api/chatroom";
   const SIZE = 12;
 
   const fetchChatrooms = useCallback(
     (currentPage: number) => {
       if (!hasMore || loading) return;
       setLoading(true);
-      fetch(`${BASE_URL}/all?page=${page}&size=${SIZE}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+
+      fetch(
+        `${process.env.REACT_APP_BASE_URL}/chatroom/all?page=${page}&size=${SIZE}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => response.json())
         .then((result) => {
           setChatrooms((prevChatrooms) => {

@@ -22,7 +22,9 @@ const Chatroom = () => {
   useInitializeAuth();
 
   useEffect(() => {
-    const client = Stomp.over(() => new SockJS("http://127.0.0.1:8080/stomp"));
+    const client = Stomp.over(
+      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
+    );
 
     client.connect({}, () => {
       client.send(`/pub/chatroom/${chatroomId}/connect`, {}, "");

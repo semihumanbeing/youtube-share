@@ -20,7 +20,7 @@ const MyChatroomList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`http://127.0.0.1:8080/api/chatroom`, {
+      await fetch(`${process.env.REACT_APP_BASE_URL}/chatroom`, {
         method: "GET",
         credentials: "include",
         headers: {
