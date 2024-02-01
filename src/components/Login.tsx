@@ -30,14 +30,14 @@ const Login = ({ email, password }: LoginProps) => {
     if (!validateEmail(emailInput)) {
       setErrors((prev) => ({
         ...prev,
-        email: "유효하지 않은 이메일 형식입니다.",
+        email: "Email address is not valid.",
       }));
       return;
     }
     if (!validatePassword(passwordInput)) {
       setErrors((prev) => ({
         ...prev,
-        password: "비밀번호는 최소 6자 이상이어야 합니다.",
+        password: "Password Must be a minimum of 6 characters.",
       }));
       return;
     }
@@ -55,8 +55,7 @@ const Login = ({ email, password }: LoginProps) => {
         if (!response.data) {
           const errorCode = response.errorCode as string;
           console.log(errorCode);
-          const errorMessage =
-            ERROR_MESSAGES[errorCode] || "로그인에 실패했습니다.";
+          const errorMessage = ERROR_MESSAGES[errorCode] || "login failed.";
           setErrors({ ...errors, general: errorMessage });
           return;
         }
@@ -66,7 +65,7 @@ const Login = ({ email, password }: LoginProps) => {
       })
       .catch((error: any) => {
         console.error("Error during login", error);
-        setErrors({ ...errors, general: "로그인에 실패했습니다." });
+        setErrors({ ...errors, general: "login failed." });
         return;
       });
   };

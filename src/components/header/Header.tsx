@@ -11,7 +11,7 @@ const Header = () => {
 
   const handleRefresh = (e: any) => {
     e.preventDefault();
-    window.location.replace("/youtube-share");
+    window.location.replace("/");
   };
 
   return (

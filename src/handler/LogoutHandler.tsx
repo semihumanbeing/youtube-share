@@ -24,7 +24,7 @@ const LogoutHandler = () => {
         }
       );
       const data = await response.json();
-      console.log("Logout Success:", data);
+      console.log("Logout Success:");
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
