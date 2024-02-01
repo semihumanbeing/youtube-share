@@ -2,7 +2,7 @@
   "name": "youtube-share-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://semihumanbeing.github.io/youtube-share",
+  "homepage": ".",
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "@stomp/stompjs": "^7.0.0",
@@ -30,7 +30,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=80 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

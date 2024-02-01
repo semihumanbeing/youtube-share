@@ -25,7 +25,7 @@ const App = () => {
 
 const AppContent = () => {
   return (
-    <BrowserRouter basename="/youtube-share">
+    <BrowserRouter basename="/">
       <Header />
       <Routes>
         <Route path="/my-chatrooms" element={<MyChatroomList />} />
