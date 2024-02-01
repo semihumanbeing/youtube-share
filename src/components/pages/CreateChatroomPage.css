@@ -1,0 +1,60 @@
+.create-chatroom-container {
+  max-width: 300px;
+  margin: auto;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  font-size: 12pt;
+  margin: auto;
+  margin-left: 3px;
+  padding: 5px;
+  width: 90%;
+  padding: 8px;
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
+.error-message {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: hsl(0, 70%, 50%);
+  font-size: 14px;
+}
+
+.haspwd-button {
+  width: 25%;
+  margin-left: 75%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: hwb(214 41% 44%);
+  transition: background-color 0.3s;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: hwb(214 30% 31%);
+  transition: background-color 0.3s;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+.create-button:hover {
+  background-color: hwb(214 25% 41%);
+}
