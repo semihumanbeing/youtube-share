@@ -9,6 +9,10 @@ const Header = () => {
   const [user] = useRecoilState(userState);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const hideMenu = () => {
+    setIsMenuVisible(false);
+  };
+
   const handleRefresh = (e: any) => {
     e.preventDefault();
     window.location.replace("/");
@@ -51,11 +55,19 @@ const Header = () => {
             </button>
             {isMenuVisible && (
               <div className="dropdown-menu">
-                <Link to="/my-chatrooms" className="dropdown-item">
-                  내 채팅방 보기
+                <Link
+                  to="/my-chatrooms"
+                  className="dropdown-item"
+                  onClick={hideMenu}
+                >
+                  See My Rooms
                 </Link>
-                <Link to="/create-chatroom" className="dropdown-item">
-                  채팅방 만들기
+                <Link
+                  to="/create-chatroom"
+                  className="dropdown-item"
+                  onClick={hideMenu}
+                >
+                  Create My Room
                 </Link>
               </div>
             )}

@@ -14,6 +14,7 @@ import ChatroomList from "./components/ChatroomList";
 import { RecoilRoot } from "recoil";
 import ChatroomPage from "./components/pages/ChatroomPage";
 import MyChatroomList from "./components/MyChatroomList";
+import CreateChatroomPage from "./components/pages/CreateChatroomPage";
 
 const App = () => {
   return (
@@ -29,7 +30,7 @@ const AppContent = () => {
       <Header />
       <Routes>
         <Route path="/my-chatrooms" element={<MyChatroomList />} />
-        <Route path="/create-chatroom" element={<>hello</>} />
+        <Route path="/create-chatroom" element={<CreateChatroomPage />} />
         <Route path="/" element={<ChatroomList />} />
         <Route path="/chatroom/:chatroomId" element={<ChatroomPage />} />
         <Route path="/login" element={<Login email="" password="" />} />
