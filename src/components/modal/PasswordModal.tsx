@@ -11,6 +11,7 @@ export const PasswordModal = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onConfirm(password);
+    onclose;
   };
 
   if (!isOpen) return null;

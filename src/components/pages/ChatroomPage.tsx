@@ -12,6 +12,7 @@ const ChatroomPage = () => {
 
   return (
     <div className="chatroom-page">
+      <h2></h2>
       <div className="video-player">{isWindow && <VideoPlayer />}</div>
       <div className="chatroom">
         <Chatroom />

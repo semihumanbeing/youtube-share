@@ -69,6 +69,8 @@ const ChatroomList = () => {
   );
 
   const handlePasswordConfirm = (password: string) => {
+    console.log(selectedChatroom);
+    console.log(password);
     if (selectedChatroom && password === selectedChatroom.chatroomPassword) {
       navigate(`/chatroom/${selectedChatroom.chatroomId}`);
     } else {
@@ -113,7 +115,14 @@ const ChatroomList = () => {
         <div
           key={chatroom.chatroomId}
           className="chatroom-block"
-          onClick={() => navigate(`/chatroom/${chatroom.chatroomId}`)}
+          onClick={() => {
+            if (chatroom.hasPwd) {
+              setSelectedChatroom(chatroom);
+              setIsModalOpen(true);
+            } else {
+              navigate(`/chatroom/${chatroom.chatroomId}`);
+            }
+          }}
         >
           <div className="chatroom-emoji">{chatroom.emoji}</div>
           <div className="chatroom-name">{chatroom.chatroomName}</div>

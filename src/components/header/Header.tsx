@@ -38,10 +38,10 @@ const Header = () => {
         {!user || !user.accessToken ? (
           <div className="header">
             <Link to="/login" className="user-link">
-              로그인
+              Login
             </Link>
             <Link to="/signup" className="user-link">
-              회원가입
+              Register
             </Link>
           </div>
         ) : (
