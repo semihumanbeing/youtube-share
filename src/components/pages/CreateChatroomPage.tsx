@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreateChatroomPage.css";
+import useInitializeAuth from "../../hooks/useInitializeAuth";
 
 const CreateChatroomPage = () => {
   const [chatroomName, setChatroomName] = useState<string>("");
@@ -10,6 +11,7 @@ const CreateChatroomPage = () => {
   const navigate = useNavigate();
 
   const handleCreateChatroom = async () => {
+    useInitializeAuth();
     if (!chatroomName) {
       setError("name cannot be empty.");
       return;

@@ -29,12 +29,13 @@ const useInitializeAuth = () => {
       body: JSON.stringify({ refreshToken }),
     })
       .then((response) => response.json())
-      .then((response) => {
-        if (!response.data) {
-          const data = response.data;
-          setUser(data);
-          localStorage.setItem("user", JSON.stringify(data));
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Invalid refresh token");
         }
+        const data = await response.json();
+        setUser(data);
+        localStorage.setItem("user", JSON.stringify(data));
       })
       .catch((error: any) => {
         console.error("Error refreshing token", error);
