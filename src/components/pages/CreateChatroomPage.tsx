@@ -10,8 +10,8 @@ const CreateChatroomPage = () => {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
+  useInitializeAuth();
   const handleCreateChatroom = async () => {
-    useInitializeAuth();
     if (!chatroomName) {
       setError("name cannot be empty.");
       return;
