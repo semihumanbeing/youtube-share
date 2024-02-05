@@ -27,7 +27,7 @@
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background-color: hwb(214 30% 31%);
+  background-color: #776e81;
   transition: background-color 0.3s;
   color: white;
   font-size: 16px;
@@ -36,7 +36,7 @@
 }
 
 .user-button:hover {
-  background-color: hwb(214 25% 41%);
+  background-color: #9787a8;
 }
 
 /* 오류 메시지 스타일 */

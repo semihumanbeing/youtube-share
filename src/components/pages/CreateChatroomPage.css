@@ -37,7 +37,7 @@ input {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background-color: hwb(214 41% 44%);
+  background-color: #776e81;
   transition: background-color 0.3s;
   color: white;
   font-size: 16px;
@@ -49,12 +49,12 @@ input {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background-color: hwb(214 30% 31%);
+  background-color: #5d536b;
   transition: background-color 0.3s;
   color: white;
   font-size: 16px;
   cursor: pointer;
 }
 .create-button:hover {
-  background-color: hwb(214 25% 41%);
+  background-color: #766988;
 }

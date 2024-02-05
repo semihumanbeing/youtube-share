@@ -1,6 +1,18 @@
-/* src/ChatroomPage.css */
 .chatroom-page {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
+}
+.chatroom-name {
+  background-color: #5d536b;
+  width: 72%;
+  border-radius: 5px;
+  margin-left: 3%;
+  padding-left: 1%;
+}
+
+@media only screen and (max-width: 768px) {
+  .chatroom-page {
+    flex-direction: column-reverse;
+  }
 }

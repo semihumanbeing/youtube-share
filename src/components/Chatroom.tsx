@@ -27,7 +27,11 @@ const Chatroom = () => {
     );
 
     client.connect({}, () => {
-      client.send(`/pub/chatroom/${chatroomId}/connect`, {}, "");
+      client.send(
+        `/pub/chatroom/${chatroomId}/connect`,
+        {},
+        JSON.stringify({ username: user.username })
+      );
       client.subscribe(
         `/sub/chat/room/${chatroomId}`,
         (response: { body: string }) => {
