@@ -1,22 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PasswordModal } from "./modal/PasswordModal";
 import useInitializeAuth from "../hooks/useInitializeAuth";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/states";
 
 interface Chatroom {
-  chatroomId: number;
+  chatroomId: string;
+  userId: number;
+  username: string;
   emoji: string;
   chatroomName: string;
   userCount: number;
   maxUserCount: number;
   hasPwd: boolean;
-  username: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const MyChatroomList = () => {
-  useInitializeAuth();
   const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
   const navigate = useNavigate();
+  const [user] = useRecoilState(userState);
+
+  useInitializeAuth();
+
+  const handleDeleteChatroom = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    chatroomId: string
+  ) => {
+    e.preventDefault();
+    if (!confirm("삭제하시겠습니까?")) {
+      return;
+    }
+    await fetch(`${process.env.REACT_APP_BASE_URL}/chatroom/${chatroomId}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json)
+      .then((response) => {
+        console.log(chatroomId);
+        const updatedChatrooms = chatrooms.filter(
+          (chatroom) => chatroom.chatroomId !== chatroomId
+        );
+        setChatrooms(updatedChatrooms);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +94,18 @@ const MyChatroomList = () => {
           <div className="chatroom-info">
             <span>By {chatroom.username}</span>
           </div>
+          {user && user.userId === chatroom.userId && (
+            <button
+              type="button"
+              className="delete-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteChatroom(e, chatroom.chatroomId);
+              }}
+            >
+              Delete
+            </button>
+          )}
         </div>
       ))}
     </div>

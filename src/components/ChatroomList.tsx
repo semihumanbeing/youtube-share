@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { PasswordModal } from "./modal/PasswordModal";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/states";
 
 interface Chatroom {
   chatroomId: string;
@@ -22,6 +24,7 @@ const ChatroomList = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [user] = useRecoilState(userState);
   const modalRef = useRef<HTMLDivElement>(null);
   const [selectedChatroom, setSelectedChatroom] = useState<Chatroom | null>(
     null
@@ -69,8 +72,6 @@ const ChatroomList = () => {
   );
 
   const handlePasswordConfirm = (password: string) => {
-    console.log(selectedChatroom);
-    console.log(password);
     if (selectedChatroom && password === selectedChatroom.chatroomPassword) {
       navigate(`/chatroom/${selectedChatroom.chatroomId}`);
     } else {
@@ -78,6 +79,34 @@ const ChatroomList = () => {
       return;
     }
     setIsModalOpen(false);
+  };
+
+  const handleDeleteChatroom = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    chatroomId: string
+  ) => {
+    e.preventDefault();
+    if (!confirm("삭제하시겠습니까?")) {
+      return;
+    }
+    await fetch(`${process.env.REACT_APP_BASE_URL}/chatroom/${chatroomId}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json)
+      .then((response) => {
+        console.log(chatroomId);
+        const updatedChatrooms = chatrooms.filter(
+          (chatroom) => chatroom.chatroomId !== chatroomId
+        );
+        setChatrooms(updatedChatrooms);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
   };
 
   // 초기 채팅방 로드
@@ -134,6 +163,20 @@ const ChatroomList = () => {
           {chatroom.hasPwd && <span className="lock-icon">🔒</span>}
           <div className="chatroom-info">
             <span>By {chatroom.username}</span>
+          </div>
+          <div>
+            {user && user.userId === chatroom.userId && (
+              <button
+                type="button"
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteChatroom(e, chatroom.chatroomId);
+                }}
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       ))}

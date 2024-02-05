@@ -258,6 +258,15 @@ header {
 .chatroom-info {
   margin-top: 5px;
 }
+.delete-button {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #3b383b;
+  color: white;
+  cursor: pointer;
+  border: none;
+  margin-left: 80%;
+}
 .chatroom-end {
   height: 20px;
   margin: auto;
