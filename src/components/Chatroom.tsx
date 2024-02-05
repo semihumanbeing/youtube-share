@@ -105,13 +105,19 @@ const Chatroom = () => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.nativeEvent.isComposing === false && e.key === "Enter") {
               sendMessage();
             }
           }}
           placeholder="Type your message here"
         />
-        <button className="chat-button" onClick={sendMessage}>
+        <button
+          className="chat-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            sendMessage();
+          }}
+        >
           Send
         </button>
       </div>
