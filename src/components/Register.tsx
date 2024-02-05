@@ -46,7 +46,7 @@ const RegisterComponent = () => {
       if (!validatePassword(password) || !isValidInput(password)) {
         setErrors((prevErrors) => ({
           ...prevErrors,
-          password: "Password Must be a minimum of 6 characters.",
+          password: "Password must be a minimum of 6 characters.",
         }));
         valid = false;
       }

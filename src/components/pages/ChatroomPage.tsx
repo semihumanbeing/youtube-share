@@ -16,7 +16,7 @@ const ChatroomPage = () => {
   return (
     <>
       <div className="chatroom-info">
-        <h1 className="chatroom-name">
+        <h1 className="page-chatroom-name">
           {chatroom ? chatroom.chatroomName : ""}
         </h1>
       </div>

@@ -37,7 +37,7 @@ const Login = ({ email, password }: LoginProps) => {
     if (!validatePassword(passwordInput)) {
       setErrors((prev) => ({
         ...prev,
-        password: "Password Must be a minimum of 6 characters.",
+        password: "Password must be a minimum of 6 characters.",
       }));
       return;
     }
