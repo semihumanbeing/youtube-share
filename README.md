@@ -1,7 +1,7 @@
 # Youtube share WEB
 ![image](https://github.com/semihumanbeing/youtube-share/assets/99929191/63f93ffb-5142-474a-a2eb-a28299594487)
 친구들과 음악을 함께 들으며 채팅할 수 있는 웹사이트 <br>
-리액트, 타입스크립트를 처음 적용해서 (사실 프론트엔드도 처음) 만들고 있습니다.. <br>
+프론트엔드도 한번 공부해 두면 좋을것 같아서 리액트, 타입스크립트를 사용해서 만들고 있습니다.. <br>
 
 <br><br>
 배포방법
