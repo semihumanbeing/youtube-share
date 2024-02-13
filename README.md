@@ -1,13 +1,13 @@
 # Youtube share WEB
 ![image](https://github.com/semihumanbeing/youtube-share/assets/99929191/63f93ffb-5142-474a-a2eb-a28299594487)
 친구들과 음악을 함께 들으며 채팅할 수 있는 웹사이트 
+
 ---
 ### stacks
 Front-end: React.js, Typescript <br>
 Back-end: Java, SpringBoot, Websocket, Redis, MariaDB <br>
 Server: Google cloud platform, Nginx <br>
 
-<br><br>
 ---
 배포방법
 - npm run build
