@@ -1,6 +1,6 @@
 .chatroom-page {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
 }
 .page-chatroom-name {
@@ -13,6 +13,127 @@
 
 @media only screen and (max-width: 768px) {
   .chatroom-page {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
+}
+
+.playlist {
+  background-color: #4a4355;
+  width: 200px;
+  margin-right: 20%;
+  margin-left: 1%;
+  max-height: 460px;
+  padding: 3px;
+  padding-right: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: small;
+  /* Custom scrollbar styles */
+  scrollbar-width: none;
+}
+
+.video-item {
+  width: 100%;
+  padding: 5px;
+}
+.current-song {
+  background-color: #584972;
+  font-weight: bold;
+}
+
+.add-video-button {
+  margin-left: 61%;
+  margin-top: 10px;
+  background-color: #4a4355;
+  border-radius: 10px;
+  color: white;
+  width: 120px;
+  height: 50px;
+}
+
+/*///////////////////////// search modal /////////////////////*/
+.search-modal {
+  position: fixed;
+  margin-top: 100px;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+  background-color: #141316;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.search-input {
+  flex: 1;
+  margin-left: 8%;
+  margin-top: 10px;
+  width: 60%;
+  margin-right: 10px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  margin-left: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #373f47;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.search-button:hover {
+  background-color: #4a545e;
+}
+
+.search-videos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 15px;
+  width: 97%;
+  text-overflow: ellipsis;
+}
+
+.search-videos {
+  width: calc(25% - 20px);
+  max-width: 200px;
+  max-height: 150px;
+  padding: 10px;
+  margin: 5px;
+  text-wrap: wrap;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.search-videos-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-videos-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.search-videos-container {
+  scrollbar-width: thin;
+}
+
+.search-videos-container::-moz-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
 }
