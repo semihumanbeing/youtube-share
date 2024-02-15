@@ -79,7 +79,9 @@ const MyChatroomList = () => {
           key={chatroom.chatroomId}
           className="chatroom-block"
           onClick={() => {
-            navigate(`/chatroom/${chatroom.chatroomId}`);
+            navigate(`/chatroom/${chatroom.chatroomId}`, {
+              state: { chatroom: chatroom },
+            });
           }}
         >
           <div className="chatroom-emoji">{chatroom.emoji}</div>

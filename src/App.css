@@ -276,7 +276,7 @@ header {
 
 /* ////////////////////// Chatroom //////////////////// */
 .chat-container {
-  width: 20%;
+  width: 18%;
   height: 100vh;
   position: fixed;
   right: 0;
@@ -296,12 +296,10 @@ header {
   padding: 10px;
   background-color: #333;
   color: white;
-  /* Custom scrollbar styles */
   scrollbar-width: thin;
   scrollbar-color: #888 #333;
 }
 
-/* For Webkit browsers like Chrome, Safari */
 .chat-messages::-webkit-scrollbar {
   width: 8px;
 }

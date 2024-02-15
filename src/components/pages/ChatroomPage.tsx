@@ -6,13 +6,15 @@ import VideoPlayer from "../VideoPlayer";
 import useInitializeAuth from "../../hooks/useInitializeAuth";
 import Playlist from "../Playlist";
 import VideoModal from "../modal/VideoModal";
+import { VideoProps } from "../../props/VideoProps";
 
 const ChatroomPage = () => {
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const { state } = useLocation();
   const chatroom = state && state.chatroom;
-  const chatroomId = useParams();
+  const param = useParams();
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<VideoProps>();
   useInitializeAuth();
 
   useEffect(() => {
@@ -22,6 +24,11 @@ const ChatroomPage = () => {
   function changeModalStatus(): void {
     setModalVisible((prevModalVisible) => !prevModalVisible);
   }
+  const onSelectVideo = (video: VideoProps): void => {
+    if (video) {
+      setSelectedVideo(video);
+    }
+  };
   return (
     <>
       <div className="chatroom-info">
@@ -34,7 +41,12 @@ const ChatroomPage = () => {
         <div className="video-player">{isWindow && <VideoPlayer />}</div>
 
         <div className="playlist">
-          {isWindow && <Playlist chatroomId={chatroomId.chatroomId} />}
+          {isWindow && param.chatroomId && (
+            <Playlist
+              chatroomId={param.chatroomId}
+              selectedVideo={selectedVideo}
+            />
+          )}
         </div>
       </div>
       <button className="add-video-button" onClick={changeModalStatus}>
@@ -43,7 +55,12 @@ const ChatroomPage = () => {
       <div className="chatroom">
         <Chatroom />
       </div>
-      {modalVisible && <VideoModal onCloseModal={changeModalStatus} />}
+      {modalVisible && (
+        <VideoModal
+          onCloseModal={changeModalStatus}
+          onSelectVideo={onSelectVideo}
+        />
+      )}
     </>
   );
 };

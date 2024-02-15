@@ -18,8 +18,7 @@
 }
 
 .playlist {
-  background-color: #4a4355;
-  width: 200px;
+  width: 360px;
   margin-right: 20%;
   margin-left: 1%;
   max-height: 460px;
@@ -28,16 +27,45 @@
   overflow-y: auto;
   overflow-x: hidden;
   font-size: small;
-  /* Custom scrollbar styles */
+  align-items: center;
   scrollbar-width: none;
 }
 
+.video-info {
+  text-align: right;
+  margin-right: 2%;
+  color: #c2bbcc;
+}
+
+.video-info-box .video-delete-button {
+  cursor: pointer;
+  margin-left: 83%;
+  margin-right: 2%;
+  border: none;
+  color: #c2bbcc;
+  background-color: #1e1d20;
+}
+.video-info-box {
+  background-color: #413c47;
+  height: 150px;
+  border-radius: 10px;
+  padding: 2px;
+  margin-top: 3px;
+}
+.title {
+  margin-left: 5px;
+}
 .video-item {
+  display: flex;
+  padding-right: 2px;
   width: 100%;
+  align-items: center;
   padding: 5px;
+
+  margin-top: 2px;
 }
 .current-song {
-  background-color: #584972;
+  background-color: #563a85;
   font-weight: bold;
 }
 
@@ -57,10 +85,13 @@
   margin-top: 100px;
   left: 50%;
   top: 50%;
-  width: 60%;
+  width: 80%;
   height: 70%;
   transform: translate(-50%, -50%);
-  background-color: #141316;
+  background-color: #1e1d20;
+  border-radius: 10px;
+  border: 1px solid rgb(71, 62, 71);
+  box-shadow: 5px -5px 10px rgb(45, 42, 48);
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1000;
@@ -70,12 +101,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .search-input {
   flex: 1;
-  margin-left: 8%;
+  margin-left: 2%;
   margin-top: 10px;
   width: 60%;
   margin-right: 10px;
@@ -108,16 +140,21 @@
 }
 
 .search-videos {
-  width: calc(25% - 20px);
-  max-width: 200px;
+  display: flex;
+  cursor: pointer;
+  width: calc(33% - 20px);
+  max-width: 450px;
   max-height: 150px;
   padding: 10px;
   margin: 5px;
   text-wrap: wrap;
-  border: 1px solid #ccc;
+  background-color: #323436;
   border-radius: 4px;
-  text-align: center;
+  text-align: left;
   box-sizing: border-box;
+}
+.search-videos img {
+  margin-right: 10px;
 }
 
 .search-videos-container::-webkit-scrollbar {
@@ -136,4 +173,21 @@
 .search-videos-container::-moz-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 4px;
+}
+.notification-modal {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  background-color: #5823d3;
+  color: white;
+  border-radius: 5px;
+  transition: opacity 1s ease-in-out;
+}
+
+.notification-modal.visible {
+  display: block;
+  opacity: 0.8;
 }
