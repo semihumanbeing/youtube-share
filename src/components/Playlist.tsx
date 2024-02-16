@@ -2,57 +2,67 @@ import React, { useEffect, useState } from "react";
 import { VideoProps } from "../props/VideoProps";
 import { useRecoilState } from "recoil";
 import { userState } from "../state/states";
+import { PlaylistProps } from "../props/PlaylistProps";
+import { CompatClient, Stomp } from "@stomp/stompjs";
+import { VideoDTO } from "../props/VideoDTO";
+import SockJS from "sockjs-client";
+import { useParams } from "react-router-dom";
 interface PlaylistPageProps {
-  chatroomId: string;
   selectedVideo?: VideoProps;
 }
-interface PlaylistProps {
-  playlistId: number;
-  chatroomId: string;
-  playlistName: string;
-  isActive: boolean;
-  videos: VideoDTO[];
-}
 
-interface VideoDTO {
-  videoId: number;
-  playlistId: number;
-  userId: number;
-  username: string;
-  url: string;
-  title: string;
-  artist: string;
-  isCurrent: boolean;
-  thumbnailImg: string;
-  thumbnailWidth: number;
-  thumbnailHeight: number;
-}
-
-const Playlist = ({ chatroomId, selectedVideo }: PlaylistPageProps) => {
+const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   const [playlist, setPlaylist] = useState<PlaylistProps | null>(null);
-  const [user, setUser] = useRecoilState(userState);
+  const { chatroomId } = useParams<{ chatroomId: string }>();
+  const [user] = useRecoilState(userState);
+  const [currentVideoId, setCurrentVideoId] = useState<number>();
 
-  useEffect(() => {
-    const fetchPlaylist = async () => {
-      await fetch(`${process.env.REACT_APP_BASE_URL}/playlist/${chatroomId}`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const fetchPlaylist = async () => {
+    await fetch(`${process.env.REACT_APP_BASE_URL}/playlist/${chatroomId}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setPlaylist(response.data);
       })
-        .then((response) => response.json())
-        .then((response) => {
-          setPlaylist(response.data);
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
-    };
+      .catch((error: any) => {
+        console.error(error);
+      });
+  };
 
+  // 처음 접속 시 플레이리스트 불러오기
+  useEffect(() => {
     fetchPlaylist();
   }, [chatroomId]);
 
+  // VideoPlayer에서 전달된 곡이 현재 곡이 되도록 플레이리스트 상태 변경
+  useEffect(() => {
+    const client = Stomp.over(
+      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
+    );
+
+    client.connect({}, () => {
+      client.subscribe(
+        `/sub/video/${chatroomId}`,
+        (response: { body: string }) => {
+          const videoId = JSON.parse(response.body).videoId;
+          if (currentVideoId !== videoId) {
+            fetchPlaylist();
+            setCurrentVideoId(videoId);
+          }
+        }
+      );
+    });
+    return () => {
+      client.disconnect();
+    };
+  }, [chatroomId, currentVideoId]);
+
+  // 플레이리스트에 새 비디오 추가
   useEffect(() => {
     const addVideoToPlaylist = async () => {
       if (selectedVideo && playlist) {
@@ -78,7 +88,6 @@ const Playlist = ({ chatroomId, selectedVideo }: PlaylistPageProps) => {
           .then((response) => response.json())
           .then((response) => {
             if (response.data) {
-              console.log(response);
               setPlaylist((prevPlaylist) => ({
                 ...prevPlaylist!,
                 videos: [...prevPlaylist!.videos, response.data],
@@ -96,6 +105,7 @@ const Playlist = ({ chatroomId, selectedVideo }: PlaylistPageProps) => {
     return <div>Loading...</div>;
   }
 
+  // 플레이리스트의 비디오 삭제
   const onDeleteVideo = async (videoId: number) => {
     await fetch(
       `${process.env.REACT_APP_BASE_URL}/video/${chatroomId}/${playlist.playlistId}/${videoId}`,
@@ -129,11 +139,16 @@ const Playlist = ({ chatroomId, selectedVideo }: PlaylistPageProps) => {
   return (
     <div className="playlist">
       {playlist.videos.length === 0 ? (
-        <p>곡을 추가하세요</p>
+        <h3>Add Videos On The Playlist</h3>
       ) : (
         <div className="video-list">
           {playlist.videos.map((video) => (
-            <div className="video-info-box" key={video.videoId}>
+            <div
+              className={`video-info-box ${
+                video.isCurrent ? "current-song" : ""
+              }`}
+              key={video.videoId}
+            >
               {user.userId == video.userId && (
                 <button
                   className="video-delete-button"
@@ -142,20 +157,18 @@ const Playlist = ({ chatroomId, selectedVideo }: PlaylistPageProps) => {
                   Delete
                 </button>
               )}
-              <div
-                className={`video-item ${
-                  video.isCurrent ? "current-song" : ""
-                }`}
-              >
+              <div className={`video-item `}>
                 <img
                   src={video.thumbnailImg}
-                  width={video.thumbnailWidth}
-                  height={video.thumbnailHeight}
+                  width={video.thumbnailWidth * 0.8}
+                  height={video.thumbnailHeight * 0.8}
                 ></img>
                 <p className="title">{video.title}</p>
               </div>
+
               <p className="video-info">
-                {video.artist} | {video.username} Added
+                {video.isCurrent ? "Current Song | " : ""}
+                By {video.artist} | {video.username} Added
               </p>
             </div>
           ))}

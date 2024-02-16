@@ -7,6 +7,8 @@ import useInitializeAuth from "../../hooks/useInitializeAuth";
 import Playlist from "../Playlist";
 import VideoModal from "../modal/VideoModal";
 import { VideoProps } from "../../props/VideoProps";
+import { CompatClient, Stomp } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 const ChatroomPage = () => {
   const [isWindow, setIsWindow] = useState<boolean>(false);
@@ -15,20 +17,37 @@ const ChatroomPage = () => {
   const param = useParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoProps>();
+
   useInitializeAuth();
 
   useEffect(() => {
     setIsWindow(true);
   }, []);
 
-  function changeModalStatus(): void {
+  const changeModalStatus = () => {
     setModalVisible((prevModalVisible) => !prevModalVisible);
-  }
+  };
+
   const onSelectVideo = (video: VideoProps): void => {
     if (video) {
       setSelectedVideo(video);
     }
   };
+
+  const onPlay = () => {
+    const client = Stomp.over(
+      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
+    );
+
+    client.connect({}, () => {
+      client.send(
+        `/pub/video/current`,
+        {},
+        JSON.stringify({ chatroomId: chatroom.chatroomId })
+      );
+    });
+  };
+
   return (
     <>
       <div className="chatroom-info">
@@ -38,20 +57,21 @@ const ChatroomPage = () => {
       </div>
 
       <div className="chatroom-page">
-        <div className="video-player">{isWindow && <VideoPlayer />}</div>
-
         <div className="playlist">
           {isWindow && param.chatroomId && (
-            <Playlist
-              chatroomId={param.chatroomId}
-              selectedVideo={selectedVideo}
-            />
+            <Playlist selectedVideo={selectedVideo} />
           )}
         </div>
+        <div className="video-player">{isWindow && <VideoPlayer />}</div>
       </div>
-      <button className="add-video-button" onClick={changeModalStatus}>
-        Add video
-      </button>
+      <div className="video-buttons">
+        <button className="add-video-button" onClick={onPlay}>
+          Play!
+        </button>
+        <button className="add-video-button" onClick={changeModalStatus}>
+          Add More
+        </button>
+      </div>
       <div className="chatroom">
         <Chatroom />
       </div>

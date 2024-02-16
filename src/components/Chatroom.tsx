@@ -15,7 +15,7 @@ interface ChatMessage {
 const Chatroom = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [stompClient, setStompClient] = useState<any>(null);
+  const [client, setClient] = useState<any>(null);
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [user] = useRecoilState(userState);
 
@@ -41,7 +41,7 @@ const Chatroom = () => {
       );
     });
 
-    setStompClient(client);
+    setClient(client);
 
     return () => {
       client.disconnect(() => {
@@ -61,7 +61,7 @@ const Chatroom = () => {
       message: newMessage,
     };
 
-    stompClient.send(`/pub/chat/message`, {}, JSON.stringify(msg));
+    client.send(`/pub/chat/message`, {}, JSON.stringify(msg));
     setNewMessage("");
   };
 

@@ -19,7 +19,6 @@ const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
     await fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.items);
         setVideos(
           response.items.map((video: VideoProps) => ({
             id: video.id,

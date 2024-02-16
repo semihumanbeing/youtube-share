@@ -1,37 +1,72 @@
 import React, { useState, useEffect } from "react";
 import PlayerScreen from "./PlayerScreen";
+import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import { VideoDTO } from "../props/VideoDTO";
 
 const VideoPlayer = () => {
   const [videoId, setVideoId] = useState<string>("");
+  const { chatroomId } = useParams<{ chatroomId: string }>();
+  const [client, setClient] = useState<any>(null);
 
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_BASE_URL}/video/next`, {
-  //     credentials: "include",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       const urlParams = new URLSearchParams(
-  //         new URL(response.data.url).search
-  //       );
-  //       setVideoId(urlParams.get("v") || "");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching video URL:", error);
-  //     });
-  // }, []);
-
-  // 플레이리스트 만들기 전 테스트용
+  // 채팅방 입장시 현재곡 재생
   useEffect(() => {
-    const urlParams = new URLSearchParams(
-      new URL(
-        "https://www.youtube.com/watch?v=UyZfCrrdbm8&t=2507s&ab_channel=TheSilentWatcher"
-      ).search
+    const client = Stomp.over(
+      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
     );
-    setVideoId(urlParams.get("v") || "");
-  }, []);
+
+    client.connect({}, () => {
+      client.send(
+        `/pub/video/current`,
+        {},
+        JSON.stringify({ chatroomId: chatroomId })
+      );
+      client.subscribe(
+        `/sub/video/${chatroomId}`,
+        (response: { body: string }) => {
+          const currentVideo: VideoDTO = JSON.parse(response.body);
+          if (currentVideo.url) {
+            const urlParams = new URLSearchParams(
+              new URL(currentVideo.url).search
+            );
+            setVideoId(urlParams.get("v") || "");
+          } else {
+            setVideoId("");
+          }
+        }
+      );
+    });
+
+    setClient(client);
+    return () => {
+      client.disconnect();
+    };
+  }, [chatroomId, videoId]);
+
+  const loadNextVideo = () => {
+    client.send(
+      `/pub/video/next`,
+      {},
+      JSON.stringify({ chatroomId: chatroomId })
+    );
+  };
+
+  const handleNextVideo = () => {
+    loadNextVideo();
+  };
+
+  const handleVideoEnd = () => {
+    loadNextVideo();
+  };
 
   return videoId ? (
-    <PlayerScreen videoId={videoId} />
+    <>
+      <PlayerScreen videoId={videoId} onVideoEnd={handleVideoEnd} />
+      <button className="add-video-button" onClick={handleNextVideo}>
+        Next
+      </button>
+    </>
   ) : (
     <div className="no-video">Add More Videos On The Playlist!</div>
   );
