@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { VideoProps } from "../props/VideoProps";
 import { useRecoilState } from "recoil";
 import { userState } from "../state/states";
 import { PlaylistProps } from "../props/PlaylistProps";
-import { CompatClient, Stomp } from "@stomp/stompjs";
-import { VideoDTO } from "../props/VideoDTO";
+import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
 interface PlaylistPageProps {
@@ -34,6 +33,22 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
       });
   };
 
+  const playCurrent = () => {
+    const client = Stomp.over(
+      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
+    );
+    client.debug = function () {};
+
+    client.connect({}, () => {
+      client.send(
+        `/pub/video/current`,
+        {},
+        JSON.stringify({ chatroomId: chatroomId })
+      );
+      client.disconnect();
+    });
+  };
+
   // 처음 접속 시 플레이리스트 불러오기
   useEffect(() => {
     fetchPlaylist();
@@ -44,6 +59,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
     const client = Stomp.over(
       () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
     );
+    client.debug = function () {};
 
     client.connect({}, () => {
       client.subscribe(
@@ -66,6 +82,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   useEffect(() => {
     const addVideoToPlaylist = async () => {
       if (selectedVideo && playlist) {
+        const before = playlist.videos.length;
         await fetch(
           `${process.env.REACT_APP_BASE_URL}/video/${chatroomId}/${playlist?.playlistId}`,
           {
@@ -92,6 +109,10 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
                 ...prevPlaylist!,
                 videos: [...prevPlaylist!.videos, response.data],
               }));
+              const after = before + 1;
+              if (before == 0 && after == 1) {
+                playCurrent();
+              }
             }
           })
           .catch((error) => console.error(error));
@@ -139,7 +160,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   return (
     <div className="playlist">
       {playlist.videos.length === 0 ? (
-        <h3>Add Videos On The Playlist</h3>
+        <h3 className="playlist-empty">Playlist is empty</h3>
       ) : (
         <div className="video-list">
           {playlist.videos.map((video) => (
@@ -157,7 +178,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
                   Delete
                 </button>
               )}
-              <div className={`video-item `}>
+              <div className={"video-item"}>
                 <img
                   src={video.thumbnailImg}
                   width={video.thumbnailWidth * 0.8}

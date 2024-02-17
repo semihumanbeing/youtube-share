@@ -13,10 +13,11 @@ const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
-  const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=30&q=${searchParam}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`;
-
   const handleSubmit = async () => {
-    await fetch(url, { method: "GET" })
+    await fetch(
+      `${process.env.REACT_APP_BASE_URL}/video/youtube?search=${searchParam}`,
+      { method: "GET", credentials: "include" }
+    )
       .then((response) => response.json())
       .then((response) => {
         setVideos(
@@ -42,7 +43,7 @@ const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
 
       setTimeout(() => {
         setIsNotificationVisible(false);
-      }, 2000);
+      }, 1500);
     } else {
       return;
     }
@@ -56,6 +57,11 @@ const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
           type="text"
           placeholder="search youtube videos"
           onChange={(e) => setSearchParam(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
         />
         <button className="search-button" onClick={handleSubmit}>
           Search
@@ -66,10 +72,10 @@ const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
       </div>
 
       <div className="search-videos-container">
-        {videos.map((video) => (
+        {videos.map((video, index) => (
           <div
             className="search-videos"
-            key={video.id.videoId}
+            key={index}
             onClick={(e) => {
               e.preventDefault();
               handleVideoClick(video);

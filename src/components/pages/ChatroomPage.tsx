@@ -7,7 +7,7 @@ import useInitializeAuth from "../../hooks/useInitializeAuth";
 import Playlist from "../Playlist";
 import VideoModal from "../modal/VideoModal";
 import { VideoProps } from "../../props/VideoProps";
-import { CompatClient, Stomp } from "@stomp/stompjs";
+import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
 const ChatroomPage = () => {
@@ -17,6 +17,7 @@ const ChatroomPage = () => {
   const param = useParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoProps>();
+  const { chatroomId } = useParams<{ chatroomId: string }>();
 
   useInitializeAuth();
 
@@ -34,20 +35,6 @@ const ChatroomPage = () => {
     }
   };
 
-  const onPlay = () => {
-    const client = Stomp.over(
-      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
-    );
-
-    client.connect({}, () => {
-      client.send(
-        `/pub/video/current`,
-        {},
-        JSON.stringify({ chatroomId: chatroom.chatroomId })
-      );
-    });
-  };
-
   return (
     <>
       <div className="chatroom-info">
@@ -58,16 +45,11 @@ const ChatroomPage = () => {
 
       <div className="chatroom-page">
         <div className="playlist">
-          {isWindow && param.chatroomId && (
-            <Playlist selectedVideo={selectedVideo} />
-          )}
+          {isWindow && chatroomId && <Playlist selectedVideo={selectedVideo} />}
         </div>
         <div className="video-player">{isWindow && <VideoPlayer />}</div>
       </div>
       <div className="video-buttons">
-        <button className="add-video-button" onClick={onPlay}>
-          Play!
-        </button>
         <button className="add-video-button" onClick={changeModalStatus}>
           Add More
         </button>

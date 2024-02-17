@@ -1,5 +1,6 @@
 .chatroom-page {
   display: flex;
+  min-width: 0px;
   justify-content: baseline;
   align-items: flex-start;
 }
@@ -19,15 +20,20 @@
 
 .playlist {
   width: 370px;
+  height: 400px;
   margin-right: 1%;
-  margin-left: 5%;
-  height: 460px;
+  margin-left: 2%;
   padding: 3px;
   padding-right: 15px;
   overflow-y: auto;
   overflow-x: hidden;
   font-size: small;
   scrollbar-width: none;
+}
+.playlist-empty {
+  text-align: center;
+  width: 50%;
+  margin: auto;
 }
 
 .video-info {
@@ -47,7 +53,7 @@
 }
 .video-info-box {
   background-color: #57545a;
-  height: 135px;
+  max-height: 135px;
   border-radius: 10px;
   padding: 2px;
   margin-top: 3px;
@@ -67,7 +73,7 @@
   margin-top: 2px;
 }
 .current-song {
-  background-color: #4b425a;
+  background-color: #3c3842;
   width: 100%;
   font-weight: bold;
 }
@@ -88,7 +94,7 @@
 }
 
 .video-buttons {
-  margin-left: 10%;
+  margin-left: 5%;
   align-items: center;
   display: flex;
 }

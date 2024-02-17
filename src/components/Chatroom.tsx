@@ -25,7 +25,7 @@ const Chatroom = () => {
     const client = Stomp.over(
       () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
     );
-
+    client.debug = function () {};
     client.connect({}, () => {
       client.send(
         `/pub/chatroom/${chatroomId}/connect`,

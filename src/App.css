@@ -142,6 +142,7 @@ header {
 }
 /* 푸터 스타일 */
 .footer {
+  height: 20px;
   color: white;
   text-align: left;
   padding: 10px 0;
