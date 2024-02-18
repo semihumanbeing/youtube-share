@@ -72,9 +72,9 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         client.subscribe(
           `/sub/video/${chatroomId}`,
           (response: { body: string }) => {
+            fetchPlaylist();
             const videoId = JSON.parse(response.body).videoId;
             if (currentVideoId !== videoId) {
-              fetchPlaylist();
               setCurrentVideoId(videoId);
             }
           }
