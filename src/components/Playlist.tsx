@@ -15,25 +15,10 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [user] = useRecoilState(userState);
   const [currentVideoId, setCurrentVideoId] = useState<number>();
+  const [client, setClient] = useState<any>(null);
 
-  const fetchPlaylist = async () => {
-    await fetch(`${process.env.REACT_APP_BASE_URL}/playlist/${chatroomId}`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setPlaylist(response.data);
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
-  };
-
-  const playCurrent = () => {
+  // 처음 접속 시 플레이리스트 불러오기
+  useEffect(() => {
     const client = Stomp.over(
       () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
     );
@@ -41,41 +26,61 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
 
     client.connect({}, () => {
       client.send(
+        `/pub/playlist`,
+        {},
+        JSON.stringify({ chatroomId: chatroomId })
+      );
+      client.subscribe(
+        `/sub/playlist/${chatroomId}`,
+        (response: { body: string }) => {
+          setPlaylist(JSON.parse(response.body));
+        }
+      );
+    });
+
+    setClient(client);
+
+    return () => {
+      client.disconnect();
+    };
+  }, [chatroomId]);
+
+  const fetchPlaylist = () => {
+    if (client) {
+      client.send(
+        `/pub/playlist`,
+        {},
+        JSON.stringify({ chatroomId: chatroomId })
+      );
+    }
+  };
+
+  const playCurrent = () => {
+    if (client) {
+      client.send(
         `/pub/video/current`,
         {},
         JSON.stringify({ chatroomId: chatroomId })
       );
-      client.disconnect();
-    });
+    }
   };
-
-  // 처음 접속 시 플레이리스트 불러오기
-  useEffect(() => {
-    fetchPlaylist();
-  }, [chatroomId]);
 
   // VideoPlayer에서 전달된 곡이 현재 곡이 되도록 플레이리스트 상태 변경
   useEffect(() => {
-    const client = Stomp.over(
-      () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
-    );
-    client.debug = function () {};
-
-    client.connect({}, () => {
-      client.subscribe(
-        `/sub/video/${chatroomId}`,
-        (response: { body: string }) => {
-          const videoId = JSON.parse(response.body).videoId;
-          if (currentVideoId !== videoId) {
-            fetchPlaylist();
-            setCurrentVideoId(videoId);
+    if (client) {
+      client.connect({}, () => {
+        client.subscribe(
+          `/sub/video/${chatroomId}`,
+          (response: { body: string }) => {
+            const videoId = JSON.parse(response.body).videoId;
+            if (currentVideoId !== videoId) {
+              fetchPlaylist();
+              setCurrentVideoId(videoId);
+            }
           }
-        }
-      );
-    });
-    return () => {
-      client.disconnect();
-    };
+        );
+      });
+    }
   }, [chatroomId, currentVideoId]);
 
   // 플레이리스트에 새 비디오 추가
@@ -105,10 +110,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
           .then((response) => response.json())
           .then((response) => {
             if (response.data) {
-              setPlaylist((prevPlaylist) => ({
-                ...prevPlaylist!,
-                videos: [...prevPlaylist!.videos, response.data],
-              }));
+              fetchPlaylist();
               const after = before + 1;
               if (before == 0 && after == 1) {
                 playCurrent();
@@ -138,18 +140,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
       .then((response) => response.json())
       .then((response) => {
         if (response.data) {
-          setPlaylist((prevPlaylist) => {
-            if (prevPlaylist) {
-              const updatedVideos = prevPlaylist.videos.filter(
-                (video) => video.videoId !== videoId
-              );
-              return {
-                ...prevPlaylist,
-                videos: updatedVideos,
-              };
-            }
-            return prevPlaylist;
-          });
+          fetchPlaylist();
         } else {
           alert("failed to delete the song on playlist");
         }
