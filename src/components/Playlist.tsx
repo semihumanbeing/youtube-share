@@ -141,8 +141,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
       .then((response) => {
         if (response.data) {
           fetchPlaylist();
-        } else {
-          alert("failed to delete the song on playlist");
         }
       })
       .catch((error) => console.error(error));
