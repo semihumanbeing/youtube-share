@@ -46,13 +46,11 @@ const VideoPlayer = () => {
   }, [chatroomId, videoId]);
 
   const loadNextVideo = () => {
-    if (client) {
-      client.send(
-        `/pub/video/next`,
-        {},
-        JSON.stringify({ chatroomId: chatroomId })
-      );
-    }
+    client.send(
+      `/pub/video/next`,
+      {},
+      JSON.stringify({ chatroomId: chatroomId })
+    );
   };
 
   const handleNextVideo = () => {

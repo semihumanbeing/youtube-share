@@ -19,57 +19,58 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
 
   // 처음 접속 시 플레이리스트 불러오기
   useEffect(() => {
+    fetchPlaylist();
+  }, [chatroomId]);
+
+  const fetchPlaylist = () => {
+    const eventSource = new EventSource(
+      `${process.env.REACT_APP_BASE_URL}/playlist/sse/${chatroomId}`,
+      {
+        withCredentials: true,
+      }
+    );
+    eventSource.addEventListener(
+      `/playlist/${chatroomId}`,
+      (event: MessageEvent) => {
+        setPlaylist(JSON.parse(event.data));
+      }
+    );
+  };
+
+  const playCurrent = () => {
     const client = Stomp.over(
       () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
     );
     client.debug = function () {};
-
     client.connect({}, () => {
-      client.send(
-        `/pub/playlist`,
-        {},
-        JSON.stringify({ chatroomId: chatroomId })
-      );
-      client.subscribe(
-        `/sub/playlist/${chatroomId}`,
-        (response: { body: string }) => {
-          setPlaylist(JSON.parse(response.body));
-        }
-      );
-    });
-    setClient(client);
-
-    return () => {
-      client.disconnect();
-    };
-  }, [chatroomId]);
-
-  const playCurrent = () => {
-    if (client) {
       client.send(
         `/pub/video/current`,
         {},
         JSON.stringify({ chatroomId: chatroomId })
       );
-    }
+      return () => {
+        client.disconnect();
+      };
+    });
   };
 
   // VideoPlayer에서 전달된 곡이 현재 곡이 되도록 플레이리스트 상태 변경
-  useEffect(() => {
-    if (client) {
-      client.connect({}, () => {
-        client.subscribe(
-          `/sub/video/${chatroomId}`,
-          (response: { body: string }) => {
-            const videoId = JSON.parse(response.body).videoId;
-            if (currentVideoId !== videoId) {
-              setCurrentVideoId(videoId);
-            }
-          }
-        );
-      });
-    }
-  }, [chatroomId, currentVideoId]);
+  // 근데 이제 플레이리스트가 새로고침되면서 현재 비디오인것도 반환될테니 굳이 설정할 필요 없을거같은데
+  // useEffect(() => {
+  //   if (client) {
+  //     client.connect({}, () => {
+  //       client.subscribe(
+  //         `/sub/video/${chatroomId}`,
+  //         (response: { body: string }) => {
+  //           const videoId = JSON.parse(response.body).videoId;
+  //           if (currentVideoId !== videoId) {
+  //             setCurrentVideoId(videoId);
+  //           }
+  //         }
+  //       );
+  //     });
+  //   }
+  // }, [chatroomId, currentVideoId]);
 
   // 플레이리스트에 새 비디오 추가
   useEffect(() => {
@@ -99,7 +100,9 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
           .then((response) => {
             if (response.data) {
               const after = before + 1;
+              console.log(after);
               if (before == 0 && after == 1) {
+                console.log("0 to 1");
                 playCurrent();
               }
             }

@@ -14,7 +14,6 @@ const ChatroomPage = () => {
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const { state } = useLocation();
   const chatroom = state && state.chatroom;
-  const param = useParams();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoProps>();
   const { chatroomId } = useParams<{ chatroomId: string }>();
