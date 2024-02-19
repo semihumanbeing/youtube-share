@@ -37,23 +37,12 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         }
       );
     });
-
     setClient(client);
 
     return () => {
       client.disconnect();
     };
   }, [chatroomId]);
-
-  const fetchPlaylist = () => {
-    if (client) {
-      client.send(
-        `/pub/playlist`,
-        {},
-        JSON.stringify({ chatroomId: chatroomId })
-      );
-    }
-  };
 
   const playCurrent = () => {
     if (client) {
@@ -75,7 +64,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
             const videoId = JSON.parse(response.body).videoId;
             if (currentVideoId !== videoId) {
               setCurrentVideoId(videoId);
-              fetchPlaylist();
             }
           }
         );
@@ -110,7 +98,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
           .then((response) => response.json())
           .then((response) => {
             if (response.data) {
-              fetchPlaylist();
               const after = before + 1;
               if (before == 0 && after == 1) {
                 playCurrent();
@@ -125,7 +112,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   }, [selectedVideo]);
 
   if (!playlist) {
-    return <div>Loading...</div>;
+    return <h3 className="playlist-empty">Loading...</h3>;
   }
 
   // 플레이리스트의 비디오 삭제
@@ -136,14 +123,7 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         method: "DELETE",
         credentials: "include",
       }
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        if (response.data) {
-          fetchPlaylist();
-        }
-      })
-      .catch((error) => console.error(error));
+    ).catch((error) => console.error(error));
   };
 
   return (

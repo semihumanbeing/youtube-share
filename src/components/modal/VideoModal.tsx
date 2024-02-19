@@ -9,7 +9,6 @@ interface VideoModalProps {
 const VideoModal = ({ onCloseModal, onSelectVideo }: VideoModalProps) => {
   const [videos, setVideos] = useState<VideoProps[]>([]);
   const [searchParam, setSearchParam] = useState("");
-  const { state } = useLocation();
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
 
