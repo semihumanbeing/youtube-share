@@ -29,11 +29,11 @@ const useInitializeAuth = () => {
       body: JSON.stringify({ refreshToken }),
     })
       .then((response) => response.json())
-      .then(async (response) => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Invalid refresh token");
         }
-        const data = await response.json();
+        const data = response.json();
         setUser(data);
         localStorage.setItem("user", JSON.stringify(data));
       })
@@ -64,10 +64,9 @@ const useInitializeAuth = () => {
       if (!isTokenExpired(accessToken)) {
         setUser(user);
       } else if (isTokenExpired(accessToken) && refreshToken) {
-        console.log("토큰 만료가 되었으나 리프레시 토큰이 있음");
+        console.log("token expired but refreshtoken exists");
         refreshAccessToken(refreshToken);
       } else {
-        console.log("refreshToken이 없거나 다른 모든 상황");
         handleLogout();
       }
     } else {

@@ -14,7 +14,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
   const [playlist, setPlaylist] = useState<PlaylistProps | null>(null);
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [user] = useRecoilState(userState);
-  const [currentVideoId, setCurrentVideoId] = useState<number>();
 
   // 처음 접속 시 플레이리스트 불러오기
   useEffect(() => {
@@ -24,12 +23,17 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         withCredentials: true,
       }
     );
+
     eventSource.addEventListener(
       `/playlist/${chatroomId}`,
       (event: MessageEvent) => {
         setPlaylist(JSON.parse(event.data));
       }
     );
+
+    return () => {
+      eventSource.close();
+    };
   }, [chatroomId]);
 
   const playCurrent = () => {
@@ -43,9 +47,8 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         {},
         JSON.stringify({ chatroomId: chatroomId })
       );
-      return () => {
-        client.disconnect();
-      };
+
+      client.disconnect();
     });
   };
 
@@ -95,7 +98,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
           .then((response) => {
             if (response.data) {
               const after = before + 1;
-              console.log(after);
               if (before == 0 && after == 1) {
                 playCurrent();
               }

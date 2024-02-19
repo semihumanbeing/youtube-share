@@ -43,14 +43,16 @@ const VideoPlayer = () => {
     return () => {
       client.disconnect();
     };
-  }, [chatroomId, videoId]);
+  }, [chatroomId]);
 
   const loadNextVideo = () => {
-    client.send(
-      `/pub/video/next`,
-      {},
-      JSON.stringify({ chatroomId: chatroomId })
-    );
+    if (client) {
+      client.send(
+        `/pub/video/next`,
+        {},
+        JSON.stringify({ chatroomId: chatroomId })
+      );
+    }
   };
 
   const handleNextVideo = () => {

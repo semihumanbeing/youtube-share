@@ -40,7 +40,6 @@ const MyChatroomList = () => {
     })
       .then((response) => response.json)
       .then((response) => {
-        console.log(chatroomId);
         const updatedChatrooms = chatrooms.filter(
           (chatroom) => chatroom.chatroomId !== chatroomId
         );

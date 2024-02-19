@@ -31,7 +31,6 @@ const CreateChatroomPage = () => {
       .then((response) => response.json())
       .then((response) => {
         if (!response.data) {
-          console.log(response);
           setError(`${response.errorMsg}`);
         }
 

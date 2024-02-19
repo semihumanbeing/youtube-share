@@ -72,7 +72,6 @@ const RegisterComponent = () => {
         );
 
         if (response.ok) {
-          console.log("Registration successful");
           navigate("/login");
         } else {
           console.error("Registration failed");

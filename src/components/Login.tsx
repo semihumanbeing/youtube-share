@@ -54,7 +54,6 @@ const Login = ({ email, password }: LoginProps) => {
       .then((response) => {
         if (!response.data) {
           const errorCode = response.errorCode as string;
-          console.log(errorCode);
           const errorMessage = ERROR_MESSAGES[errorCode] || "login failed.";
           setErrors({ ...errors, general: errorMessage });
           return;
