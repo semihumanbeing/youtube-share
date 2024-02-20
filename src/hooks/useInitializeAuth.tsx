@@ -45,8 +45,17 @@ const useInitializeAuth = () => {
   };
 
   const handleLogout = () => {
+    try {
+      fetch(`${process.env.REACT_APP_BASE_URL}/user/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
     setUser(null);
     localStorage.removeItem("user");
+
     navigate("/login");
   };
 

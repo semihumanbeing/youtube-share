@@ -16,14 +16,10 @@ const LogoutHandler = () => {
     }
 
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/user/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
+      await fetch(`${process.env.REACT_APP_BASE_URL}/user/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
