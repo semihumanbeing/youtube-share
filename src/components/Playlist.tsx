@@ -25,8 +25,9 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
     );
 
     eventSource.addEventListener(
-      `/playlist/${chatroomId}`,
+      `/playlist/${chatroomId}/${user.userId}`,
       (event: MessageEvent) => {
+        console.log("Received playlist update:", event.data);
         setPlaylist(JSON.parse(event.data));
       }
     );
