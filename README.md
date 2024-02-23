@@ -1,5 +1,6 @@
 # Youtube share WEB
-![image](https://github.com/semihumanbeing/youtube-share/assets/99929191/63f93ffb-5142-474a-a2eb-a28299594487)
+![image](https://github.com/semihumanbeing/youtube-share/assets/99929191/63dad01e-07bf-45ad-93f2-78514263880b)
+
 친구들과 음악을 함께 들으며 채팅할 수 있는 웹사이트 
 
 ---
@@ -43,13 +44,13 @@ Server: Google cloud platform, Nginx <br>
 - [x]  전체 리스트 조회
 - [x]  큐 형태로 제작
 - [x]  리스트 내에서 추가 제거 기능
-- [ ]  추가 제거 기능이 전체 사용자에게 동기화
+- [x]  추가 제거 기능이 전체 사용자에게 동기화
 
 ### 동영상 검색
 
 - [x]  modal 띄우기
-- [ ]  동영상은 한번에 20개 볼 수 있음
-- [ ]  유투브 검색하고 선택한 값을 플레이리스트에 추가
+- [x]  동영상은 한번에 30개 볼 수 있음
+- [x]  유투브 검색하고 선택한 값을 플레이리스트에 추가
 
 ### 방
 
