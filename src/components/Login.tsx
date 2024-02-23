@@ -74,6 +74,7 @@ const Login = ({ email, password }: LoginProps) => {
       <h2>Log in</h2>
       {errors.general && <p className="error-message">{errors.general}</p>}
       {errors.email && <p className="error-message">{errors.email}</p>}
+      email
       <input
         className="user-input"
         type="email"
@@ -90,6 +91,7 @@ const Login = ({ email, password }: LoginProps) => {
         placeholder="Email"
       />
       {errors.password && <p className="error-message">{errors.password}</p>}
+      password
       <input
         className="user-input"
         type="password"
@@ -105,7 +107,6 @@ const Login = ({ email, password }: LoginProps) => {
           }
         }}
       />
-
       <div className="user-submit-container">
         <button className="user-button" onClick={handleLogin}>
           Log In

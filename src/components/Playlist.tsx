@@ -6,11 +6,14 @@ import { PlaylistProps } from "../props/PlaylistProps";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { useParams } from "react-router-dom";
+import { ChatroomProps } from "../props/ChatroomProps";
+
 interface PlaylistPageProps {
   selectedVideo?: VideoProps;
+  chatroom: ChatroomProps;
 }
 
-const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
+const Playlist = ({ chatroom, selectedVideo }: PlaylistPageProps) => {
   const [playlist, setPlaylist] = useState<PlaylistProps | null>(null);
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [user] = useRecoilState(userState);
@@ -23,19 +26,18 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
         withCredentials: true,
       }
     );
-
     eventSource.addEventListener(
       `/playlist/${chatroomId}/${user.userId}`,
       (event: MessageEvent) => {
         setPlaylist(JSON.parse(event.data));
       }
     );
-
     return () => {
       eventSource.close();
     };
   }, [chatroomId]);
 
+  // 현재 비디오 재생
   const playCurrent = () => {
     const client = Stomp.over(
       () => new SockJS(`${process.env.REACT_APP_WS_URL}`)
@@ -51,24 +53,6 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
       client.disconnect();
     });
   };
-
-  // VideoPlayer에서 전달된 곡이 현재 곡이 되도록 플레이리스트 상태 변경
-  // 근데 이제 플레이리스트가 새로고침되면서 현재 비디오인것도 반환될테니 굳이 설정할 필요 없을거같은데
-  // useEffect(() => {
-  //   if (client) {
-  //     client.connect({}, () => {
-  //       client.subscribe(
-  //         `/sub/video/${chatroomId}`,
-  //         (response: { body: string }) => {
-  //           const videoId = JSON.parse(response.body).videoId;
-  //           if (currentVideoId !== videoId) {
-  //             setCurrentVideoId(videoId);
-  //           }
-  //         }
-  //       );
-  //     });
-  //   }
-  // }, [chatroomId, currentVideoId]);
 
   // 플레이리스트에 새 비디오 추가
   useEffect(() => {
@@ -138,7 +122,8 @@ const Playlist = ({ selectedVideo }: PlaylistPageProps) => {
               }`}
               key={video.videoId}
             >
-              {user.userId == video.userId && (
+              {(user.userId == video.userId ||
+                user.userId == chatroom.userId) && (
                 <button
                   className="video-delete-button"
                   onClick={() => onDeleteVideo(video.videoId)}

@@ -101,7 +101,7 @@
 /*///////////////////////// search modal /////////////////////*/
 .search-modal {
   position: fixed;
-  margin-top: 100px;
+  margin-top: 150px;
   left: 50%;
   top: 50%;
   width: 80%;
@@ -111,7 +111,7 @@
   border-radius: 10px;
   border: 1px solid rgb(71, 62, 71);
   box-shadow: 5px -5px 10px rgb(45, 42, 48);
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   z-index: 1000;
 }
@@ -155,7 +155,9 @@
   justify-content: space-around;
   padding: 15px;
   width: 97%;
+  max-height: 400px;
   text-overflow: ellipsis;
+  overflow-y: auto;
 }
 
 .search-videos {

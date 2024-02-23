@@ -13,7 +13,7 @@ import SockJS from "sockjs-client";
 const ChatroomPage = () => {
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const { state } = useLocation();
-  const chatroom = state && state.chatroom;
+  const [chatroom, setChatroom] = useState(state && state.chatroom);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoProps>();
   const { chatroomId } = useParams<{ chatroomId: string }>();
@@ -21,6 +21,19 @@ const ChatroomPage = () => {
   useInitializeAuth();
 
   useEffect(() => {
+    if (!chatroom) {
+      fetch(`${process.env.REACT_APP_BASE_URL}/chatroom/${chatroomId}`, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          setChatroom(() => response.data);
+        })
+        .catch((error) => {
+          console.error("failed to fetch chatroom data");
+        });
+    }
     setIsWindow(true);
   }, []);
 
@@ -44,7 +57,9 @@ const ChatroomPage = () => {
 
       <div className="chatroom-page">
         <div className="playlist">
-          {isWindow && chatroomId && <Playlist selectedVideo={selectedVideo} />}
+          {isWindow && chatroomId && (
+            <Playlist chatroom={chatroom} selectedVideo={selectedVideo} />
+          )}
         </div>
         <div className="video-player">{isWindow && <VideoPlayer />}</div>
       </div>

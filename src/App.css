@@ -15,6 +15,7 @@
 .user-input {
   width: 100%;
   padding: 10px;
+  padding-left: 14px;
   margin-bottom: 15px;
   border: none;
   border-radius: 10px;
@@ -112,6 +113,9 @@ header {
   color: white;
   overflow: hidden;
   white-space: nowrap;
+}
+.header-button:hover {
+  background-color: #5a4b6e;
 }
 .logout-button {
   border: none;

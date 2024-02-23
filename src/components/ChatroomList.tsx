@@ -3,32 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { PasswordModal } from "./modal/PasswordModal";
 import { useRecoilState } from "recoil";
 import { userState } from "../state/states";
-
-interface Chatroom {
-  chatroomId: string;
-  userId: number;
-  username: string;
-  chatroomName: string;
-  emoji: string;
-  chatroomPassword: string;
-  userCount: number;
-  maxUserCount: number;
-  hasPwd: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { ChatroomProps } from "../props/ChatroomProps";
 
 const ChatroomList = () => {
-  const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
+  const [chatrooms, setChatrooms] = useState<ChatroomProps[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [user] = useRecoilState(userState);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [selectedChatroom, setSelectedChatroom] = useState<Chatroom | null>(
-    null
-  );
+  const [selectedChatroom, setSelectedChatroom] =
+    useState<ChatroomProps | null>(null);
   const navigate = useNavigate();
   const SIZE = 12;
 
@@ -50,7 +36,7 @@ const ChatroomList = () => {
         .then((result) => {
           setChatrooms((prevChatrooms) => {
             const newChatrooms = result.data.content.filter(
-              (newChatroom: Chatroom) =>
+              (newChatroom: ChatroomProps) =>
                 !prevChatrooms.some(
                   (prevChatroom) =>
                     prevChatroom.chatroomId === newChatroom.chatroomId
@@ -71,7 +57,7 @@ const ChatroomList = () => {
     [page, loading, hasMore]
   );
 
-  const onChatroomClick = (chatroom: Chatroom) => {
+  const onChatroomClick = (chatroom: ChatroomProps) => {
     if (chatroom.hasPwd) {
       setSelectedChatroom(chatroom);
       setIsModalOpen(true);
