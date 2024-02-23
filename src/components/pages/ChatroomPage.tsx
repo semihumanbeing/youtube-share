@@ -60,11 +60,9 @@ const ChatroomPage = () => {
       </div>
 
       <div className="chatroom-page">
-        <div className="playlist">
-          {isWindow && chatroomId && (
-            <Playlist chatroom={chatroom} selectedVideo={selectedVideo} />
-          )}
-        </div>
+        {isWindow && chatroomId && (
+          <Playlist chatroom={chatroom} selectedVideo={selectedVideo} />
+        )}
         <div className="video-player">
           {isWindow && <VideoPlayer chatroom={chatroom} />}
         </div>
