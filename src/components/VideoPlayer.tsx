@@ -4,11 +4,15 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { VideoDTO } from "../props/VideoDTO";
+import { ChatroomProps } from "../props/ChatroomProps";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/states";
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ chatroom }: { chatroom: ChatroomProps }) => {
   const [videoId, setVideoId] = useState<string>("");
   const { chatroomId } = useParams<{ chatroomId: string }>();
   const [client, setClient] = useState<any>(null);
+  const [user] = useRecoilState(userState);
 
   // 채팅방 입장시 현재곡 재생
   useEffect(() => {
@@ -66,9 +70,11 @@ const VideoPlayer = () => {
   return videoId ? (
     <>
       <PlayerScreen videoId={videoId} onVideoEnd={handleVideoEnd} />
-      <button className="add-video-button" onClick={handleNextVideo}>
-        Next
-      </button>
+      {chatroom.userId == user.userId && (
+        <button className="add-video-button" onClick={handleNextVideo}>
+          Next
+        </button>
+      )}
     </>
   ) : (
     <div className="no-video">Add More Videos On The Playlist!</div>

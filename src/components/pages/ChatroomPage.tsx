@@ -7,8 +7,6 @@ import useInitializeAuth from "../../hooks/useInitializeAuth";
 import Playlist from "../Playlist";
 import VideoModal from "../modal/VideoModal";
 import { VideoProps } from "../../props/VideoProps";
-import { Stomp } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 
 const ChatroomPage = () => {
   const [isWindow, setIsWindow] = useState<boolean>(false);
@@ -61,7 +59,9 @@ const ChatroomPage = () => {
             <Playlist chatroom={chatroom} selectedVideo={selectedVideo} />
           )}
         </div>
-        <div className="video-player">{isWindow && <VideoPlayer />}</div>
+        <div className="video-player">
+          {isWindow && <VideoPlayer chatroom={chatroom} />}
+        </div>
       </div>
       <div className="video-buttons">
         <button className="add-video-button" onClick={changeModalStatus}>
