@@ -105,10 +105,6 @@
   align-items: center;
   display: flex;
 }
-@media only screen and (max-width: 768px) {
-  .video-buttons {
-  }
-}
 
 /*///////////////////////// search modal /////////////////////*/
 .search-modal {
@@ -240,7 +236,7 @@
 }
 @media only screen and (max-width: 768px) {
   .chat-container {
-    margin-top: 55%;
+    bottom: 0;
     width: 97%;
     height: 40%;
   }
