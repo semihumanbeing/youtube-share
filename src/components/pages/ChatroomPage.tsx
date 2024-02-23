@@ -48,9 +48,15 @@ const ChatroomPage = () => {
   return (
     <>
       <div className="chatroom-info">
-        <h1 className="page-chatroom-name">
-          {chatroom ? chatroom.chatroomName : ""}
-        </h1>
+        <div className="video-buttons">
+          <div className="page-chatroom-name">
+            {chatroom ? chatroom.emoji + " " + chatroom.chatroomName : ""}
+            {chatroom ? <span className="lock-icon"> 🔒</span> : <></>}
+          </div>
+          <button className="add-video-button" onClick={changeModalStatus}>
+            Add More
+          </button>
+        </div>
       </div>
 
       <div className="chatroom-page">
@@ -63,11 +69,7 @@ const ChatroomPage = () => {
           {isWindow && <VideoPlayer chatroom={chatroom} />}
         </div>
       </div>
-      <div className="video-buttons">
-        <button className="add-video-button" onClick={changeModalStatus}>
-          Add More
-        </button>
-      </div>
+
       <div className="chatroom">
         <Chatroom />
       </div>

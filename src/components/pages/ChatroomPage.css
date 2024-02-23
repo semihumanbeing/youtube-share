@@ -3,18 +3,23 @@
   min-width: 0px;
   justify-content: baseline;
   align-items: flex-start;
+  flex-wrap: nowrap;
 }
 .page-chatroom-name {
   background-color: #5d536b;
-  width: 72%;
+  font-size: 25pt;
+  width: 60%;
+  height: 45px;
   border-radius: 5px;
   margin-left: 3%;
   padding-left: 1%;
 }
-
+.chatroom-info {
+  margin-top: 5px;
+}
 @media only screen and (max-width: 768px) {
   .chatroom-page {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 }
 
@@ -32,7 +37,7 @@
 }
 .playlist-empty {
   text-align: center;
-  width: 50%;
+  width: 100%;
   margin: auto;
 }
 
@@ -79,8 +84,9 @@
 }
 
 .add-video-button {
-  margin-top: 10px;
+  margin-top: 5px;
   margin-right: 3px;
+  margin-left: 5px;
   background-color: #4a4355;
   border-radius: 10px;
   color: white;
@@ -94,10 +100,16 @@
 }
 
 .video-buttons {
+  margin-left: 5px;
   margin-left: 5%;
   align-items: center;
   display: flex;
 }
+@media only screen and (max-width: 768px) {
+  .video-buttons {
+  }
+}
+
 /*///////////////////////// search modal /////////////////////*/
 .search-modal {
   position: fixed;
@@ -211,4 +223,89 @@
 .notification-modal.visible {
   display: block;
   opacity: 0.8;
+}
+
+/* ////////////////////// Chatroom //////////////////// */
+.chat-container {
+  width: 250px;
+  height: 100vh;
+  top: 50px;
+  position: fixed;
+  right: 0;
+  margin: auto;
+  padding: 10px;
+  border: 1px solid #333;
+  background-color: #1a1a1a;
+  color: white;
+}
+@media only screen and (max-width: 768px) {
+  .chat-container {
+    margin-top: 55%;
+    width: 97%;
+    height: 40%;
+  }
+}
+
+.chat-messages {
+  margin-bottom: 10px;
+  height: 75%;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #333;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.chat-message {
+  font-size: smaller;
+  margin-bottom: 7px;
+}
+
+.chat-input {
+  width: calc(100% - 90px);
+  padding: 10px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.chat-button {
+  width: 60px;
+  padding: 10px;
+  background-color: #555555;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-button:hover {
+  background-color: #4e4e4e;
+}
+
+input:focus,
+button:focus {
+  outline: none;
 }
