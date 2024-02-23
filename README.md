@@ -15,6 +15,7 @@ Server: Google cloud platform, Nginx <br>
 - GCP에서 ./web_deploy
 
 ---
+# TODO LIST
 ### 대시보드
 - [x]  채팅방 리스트
 - [x]  비밀번호가 있으면 비번을 입력하고 들어가야함
@@ -58,4 +59,4 @@ Server: Google cloud platform, Nginx <br>
 
 - [x]  인덱스에서 방으로 이동하면 채팅창과 유투브 화면이 있는 방으로 이동함
 - [x]  매 방은 플레이리스트가 있고 사용자는 유투브 검색을 해 플레이리스트에 추가함
-- [ ]  방의 주소를 공유하는 기능
+- [ ]  방의 이름 / 비번 수정 기능
