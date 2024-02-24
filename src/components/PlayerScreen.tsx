@@ -55,6 +55,7 @@ const PlayerScreen = ({ videoId, playedAt, onVideoEnd }: PlayerScreenProps) => {
       opts={opts}
       onReady={onPlayerReady}
       onPause={onPlayerPause}
+      onStateChange={onPlayerReady}
       onEnd={() => onVideoEnd()}
       ref={playerRef}
     />
