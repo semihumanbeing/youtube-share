@@ -97,7 +97,7 @@
   margin-top: 5px;
   margin-right: 3px;
   margin-left: 5px;
-  background-color: #4a4355;
+  background-color: rgb(110, 72, 167);
   border-radius: 10px;
   color: white;
   cursor: pointer;
@@ -106,7 +106,7 @@
 }
 
 .add-video-button:hover {
-  background-color: rgb(102, 89, 122);
+  background-color: rgb(75, 43, 123);
 }
 
 .video-buttons {

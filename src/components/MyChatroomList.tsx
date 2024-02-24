@@ -22,12 +22,12 @@ const MyChatroomList = () => {
   const navigate = useNavigate();
   const [user] = useRecoilState(userState);
 
+  useInitializeAuth();
   const handleDeleteChatroom = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     chatroomId: string
   ) => {
     e.preventDefault();
-    useInitializeAuth();
     if (!confirm("삭제하시겠습니까?")) {
       return;
     }

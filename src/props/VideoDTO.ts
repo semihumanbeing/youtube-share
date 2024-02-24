@@ -7,6 +7,7 @@ export interface VideoDTO {
   title: string;
   artist: string;
   isCurrent: boolean;
+  playedAt: Date;
   thumbnailImg: string;
   thumbnailWidth: number;
   thumbnailHeight: number;

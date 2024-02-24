@@ -51,7 +51,11 @@ const ChatroomPage = () => {
         <div className="video-buttons">
           <div className="page-chatroom-name">
             {chatroom ? chatroom.emoji + " " + chatroom.chatroomName : ""}
-            {chatroom ? <span className="lock-icon"> 🔒</span> : <></>}
+            {chatroom && chatroom.hasPwd ? (
+              <span className="lock-icon"> 🔒</span>
+            ) : (
+              <></>
+            )}
           </div>
           <button className="add-video-button" onClick={changeModalStatus}>
             Add More
