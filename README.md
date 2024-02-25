@@ -1,9 +1,9 @@
 # Youtube share WEB
 ![image](https://github.com/semihumanbeing/youtube-share/assets/99929191/63dad01e-07bf-45ad-93f2-78514263880b)
 
-친구들과 음악을 함께 들으며 채팅할 수 있는 웹사이트 
-개발인원: 1인
-1차 개발 기간: 2023.12.20 - 2024.02.24
+친구들과 음악을 함께 들으며 채팅할 수 있는 웹사이트 <br>
+개발인원: 1인 <br>
+1차 개발 기간: 2023.12.20 - 2024.02.24 <br>
 
 ---
 ### stacks
