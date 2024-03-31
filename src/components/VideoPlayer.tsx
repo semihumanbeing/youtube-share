@@ -65,11 +65,10 @@ const VideoPlayer = ({ chatroom }: { chatroom: ChatroomProps }) => {
         {},
         JSON.stringify({ chatroomId: chatroomId }),
         () => {
-          setIsLoading(false);
+          setIsLoading((isLoading) => !isLoading);
         }
       );
     }
-    setIsLoading(false);
   };
 
   const handleNextVideo = () => {
