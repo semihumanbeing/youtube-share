@@ -53,20 +53,13 @@ const VideoPlayer = ({ chatroom }: { chatroom: ChatroomProps }) => {
   }, [chatroomId]);
 
   const loadNextVideo = () => {
-    if (isLoading) {
-      console.log(isLoading);
-      return;
-    }
     if (client) {
       console.log(isLoading);
       setIsLoading(true);
       client.send(
         `/pub/video/next`,
         {},
-        JSON.stringify({ chatroomId: chatroomId }),
-        () => {
-          setIsLoading(false);
-        }
+        JSON.stringify({ chatroomId: chatroomId })
       );
     }
   };
