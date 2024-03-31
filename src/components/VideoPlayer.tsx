@@ -14,6 +14,7 @@ const VideoPlayer = ({ chatroom }: { chatroom: ChatroomProps }) => {
   const [client, setClient] = useState<any>(null);
   const [user] = useRecoilState(userState);
   const [playedAt, setPlayedAt] = useState<Date>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 채팅방 입장시 현재곡 재생
   useEffect(() => {
@@ -52,13 +53,23 @@ const VideoPlayer = ({ chatroom }: { chatroom: ChatroomProps }) => {
   }, [chatroomId]);
 
   const loadNextVideo = () => {
+    if (isLoading) {
+      console.log(isLoading);
+      return;
+    }
     if (client) {
+      console.log(isLoading);
+      setIsLoading(true);
       client.send(
         `/pub/video/next`,
         {},
-        JSON.stringify({ chatroomId: chatroomId })
+        JSON.stringify({ chatroomId: chatroomId }),
+        () => {
+          setIsLoading(false);
+        }
       );
     }
+    setIsLoading(false);
   };
 
   const handleNextVideo = () => {
